@@ -22,13 +22,13 @@ tested in python 3.8.10
 
 ## Usage
 
-To train the policy, run:
+To train the policy for task (say parkour), run
 
-    python train.py --exp_file exp_confs/dive_train.yaml
+    python train.py --exp_file exp_confs/parkour.yaml
 
-To test the policy, run:
+Similarly test the policy in paper, run:
     
-    python test.py --exp_file exp_confs/dive_test.yaml
+    python test.py --exp_file exp_confs/parkour_test.yaml
 
 ## High-level overview
 
