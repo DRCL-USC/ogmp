@@ -37,7 +37,7 @@ To test the policy in paper,for task (say parkour), run
 
 Similarly to train the best policy from the paper, run 
 
-    python3 train.py --exp_conf_path ./exp_confs/parkour.yaml --recurrent --logdir ./results/
+    python3 train.py --exp_conf_path ./exp_confs/parkour.yaml --recurrent --logdir ./logs/
 
 ## High-level overview
 
