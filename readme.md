@@ -10,7 +10,13 @@ Codebase accompanying the paper [OGMP: Oracle Guided Multimodal Policies for Agi
 
 ## Installation
 
-    pip install -r requirements.txt
+To install the dependencies, run:
+    
+    pip3 install -r requirements.txt
+
+Install old version of torch (new may work but not tested)
+    
+    pip3 install torch==1.13.0+cpu --extra-index-url https://download.pytorch.org/whl/cpu
 
 tested in python 3.8.10
 
@@ -34,3 +40,10 @@ To test the policy, run:
 * exp_confs: contains the experiment configuration files for training and testing.
 * train.py: file to train the policies.
 * test.py: file to test the policies.
+
+## To Do 
+
+- [ ] add the training configuration to recreate the results in the paper
+- [ ] train with new environments with the best config
+- [ ] test with the best config
+- [ ] analysis codes

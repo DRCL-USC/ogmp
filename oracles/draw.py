@@ -1,5 +1,5 @@
 
-from preview_cmmp.utils import (
+from oracles.utils import (
     legs,
     rot_mat_2d_np,
     homog_np,

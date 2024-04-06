@@ -40,28 +40,23 @@
 		<mesh name="L_hip2" file="L_hip2.STL" />
 		<mesh name="L_thigh" file="L_thigh_fin.stl" />
 		<mesh name="L_calf" file="L_calf.stl" />
-		<!-- <mesh name="L_calf" file="l_calf.stl" /> -->
 		<mesh name="L_foot" file="L_foot.stl" />
-		<!-- <mesh name="L_foot" file="l_foot.stl" /> -->
 
 		<mesh name="R_hip1" file="R_hip1.STL" />
 		<mesh name="R_hip2" file="R_hip2.STL" />
 		<mesh name="R_thigh" file="R_thigh_fin.STL" />
 		<mesh name="R_calf" file="R_calf.stl" />
-		<!-- <mesh name="R_calf" file="r_calf.stl" /> -->
 		<mesh name="R_foot" file="R_foot.stl" />
-		<!-- <mesh name="R_foot" file="r_foot.stl" /> -->
 
 		<texture type="skybox" builtin="gradient" rgb1="0.3 0.5 0.7" rgb2="0 0 0" width="512" height="3072" />
 		<texture type="2d" name="groundplane" builtin="checker" mark="edge" rgb1="0.2 0.3 0.4" rgb2="0.1 0.2 0.3" markrgb="0.8 0.8 0.8" width="300" height="300" />
 		<material name="groundplane" texture="groundplane" texuniform="true" texrepeat="5 5" reflectance="0.5" />
 		<!-- full -->
-		<!-- <hfield name='terrain' nrow='500' ncol='500' size='10 10 2.0 0.1'/> -->
+		<hfield name='terrain' nrow='500' ncol='500' size='10 10 2.0 0.1'/>
 		<!-- fgb track -->
-		<hfield name='terrain' nrow='500' ncol='500' size='10 0.5 2.0 0.05'/>
+		<!-- <hfield name='terrain' nrow='500' ncol='500' size='10 0.5 2.0 0.05'/> -->
 		<!-- dive strip -->
 		<!-- <hfield name='terrain' nrow='500' ncol='500' size='3.0 3.0 2.0 0.1'/> -->
-
 
 	</asset>
 	<worldbody>
@@ -86,7 +81,7 @@
 
 		<!-- <geom name="floor" size="0 0 .125" type="plane" conaffinity="15" condim="3" /> -->
 
-		<body name="trunk" pos="0 0 0.5">
+		<body name="trunk" pos="0 0 3.0">
 			<camera name="side" pos="0 -3 0.0" euler="1.57 0 0" mode="track"/>
 			<camera name="back" pos="-3 0 1" xyaxes="0 -1 0 1 0 2" mode="trackcom"/>
 			<camera name="track" pos="0 -3 1" zaxis="0 -1 0.5" mode="track" />
@@ -199,7 +194,7 @@
 			</body>
 		</body>
 		
-		<body name="v_trunk" pos="0 0 0.5">
+		<body name="v_trunk" pos="0 0 -0.5">
 						<freejoint name="v_root" />
 			<geom class="visual" type="box" size="0.0625 0.095 0.124"  rgba="0 0.5 0 0.5"/>
 		</body> 
@@ -229,16 +224,15 @@
 
 
 
-	<!-- <equality>
-		<weld name="world_root" active="true" body1="trunk" relpose="0 0 -0.85 1 0 0 0"/>
-	</equality> -->
-	<contact>
+	<equality>
+		<weld name="world_root" active="true" body1="trunk" relpose="0 0 -3.0 1 0 0 0"/>
+	</equality>
+	<!-- <contact>
 
-		<!-- TODO: remove later -->
 		<exclude body1="L_thigh" body2="L_hip" />
 		<exclude body1="R_thigh" body2="R_hip" />
 
-	</contact> 
+	</contact>  -->
 
 	
 

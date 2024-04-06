@@ -4,7 +4,7 @@ a script to rollout, view and record a trained policy
 import sys
 sys.path.append('./')
 from dtsd.envs.src.misc_funcs import *
-from util import env_factory
+from src.util import env_factory
 import argparse
 import torch
 import yaml
@@ -78,7 +78,7 @@ def rollout_policy(
                                         dist = cam_trolly.dist,							
                                    )	
             if is_render:
-                time.sleep(0.02) # for mesh model
+                time.sleep(env.dt)
                 if sync_camera:
                     env.sim.update_camera(
                                             cam_name='viewer' ,
@@ -140,16 +140,12 @@ if __name__ == '__main__':
     tstng_exp_conf_file.close()
 
     # load the training experiment config file
-    trng_exp_conf_file = open(os.path.join(tstng_conf['test_setup']['exp_log_path'],'exp_conf.yaml')) # remove
+    trng_exp_conf_file = open(os.path.join(tstng_conf['exp_log_path'],'exp_conf.yaml')) # remove
     trng_exp_conf = yaml.load(trng_exp_conf_file, Loader=yaml.FullLoader)
     
     # if running training config, then use the training config for testing
-    if args.run_trng_conf:
-        tstng_exp_conf = trng_exp_conf
-    else:
-        tstng_exp_conf = trng_exp_conf
-        tstng_exp_conf.update(tstng_conf)
-        tstng_exp_conf.pop('test_setup')
+    tstng_exp_conf = trng_exp_conf
+    tstng_exp_conf.update(tstng_conf)
 
     # update the testing experiment config file
     tstng_exp_conf['sim_params']['render'] = args.render_onscreen
@@ -160,13 +156,13 @@ if __name__ == '__main__':
         if '.mp4' not in tstng_exp_conf['frame_recorder']['export_path']:
             tstng_conf['frame_recorder']['export_path'] = os.path.join(
             tstng_conf['frame_recorder']['export_path'],
-            tstng_conf['test_setup']['exp_log_path'].replace("./logs/","")
+            tstng_conf['exp_log_path'].replace("./logs/","")
             )
     
     if exists_not_none('export_logger',tstng_exp_conf):
         tstng_conf['export_logger']['export_path'] = os.path.join(
         tstng_conf['export_logger']['export_path'],
-        tstng_conf['test_setup']['exp_log_path'].replace("./logs/","")
+        tstng_conf['exp_log_path'].replace("./logs/","")
         )
     tstng_exp_conf_file =  open(tstng_exp_conf_path,'w')
     yaml.dump(tstng_exp_conf,tstng_exp_conf_file,default_flow_style=False,sort_keys=False)
@@ -176,13 +172,13 @@ if __name__ == '__main__':
     env.sim.set_default_camera()
 
     # load the policy
-    print("\ntesting experiment:",tstng_conf['test_setup']['exp_log_path'])
-    policy = torch.load(os.path.join(tstng_conf['test_setup']['exp_log_path'],'actor.pt'))
+    print("\ntesting experiment:",tstng_conf['exp_log_path'])
+    policy = torch.load(os.path.join(tstng_conf['exp_log_path'],'actor.pt'))
 
 
     # run n episodes
     with torch.no_grad():
-        for n_epi in range(tstng_conf['test_setup']['n_episodes']):
+        for n_epi in range(tstng_conf['n_episodes']):
             if env.sim.viewer_paused:
                 print('viewer paused, press space to unpause')
             terminate_and_exit = rollout_policy(

@@ -5,8 +5,8 @@ if __name__ == "__main__":
 
   parser = argparse.ArgumentParser()
   from algos.ppo import run_experiment
-  parser.add_argument("--timesteps",          default=1e6,           type=float) # timesteps to run experiment for
-  parser.add_argument('--discount',           default=0.99,          type=float) # the discount factor
+  parser.add_argument("--timesteps",          default=600000000,           type=float) # timesteps to run experiment for
+  parser.add_argument('--discount',           default=0.95,          type=float) # the discount factor
   parser.add_argument('--std',                default=0.13,          type=float) # the fixed exploration std
   parser.add_argument("--a_lr",               default=1e-4,          type=float) # adam learning rate for actor
   parser.add_argument("--c_lr",               default=1e-4,          type=float) # adam learning rate for critic
@@ -17,12 +17,12 @@ if __name__ == "__main__":
 
   parser.add_argument("--max_itr",            default=2000,          type=int)   # maximum policy updates
   parser.add_argument("--batch_size",         default=64,            type=int)   # batch size for policy update
-  parser.add_argument("--epochs",             default=3,             type=int)   # number of updates per iter
-  parser.add_argument("--workers",            default=4,             type=int)   # how many workers to use for exploring in parallel
+  parser.add_argument("--epochs",             default=8,             type=int)   # number of updates per iter
+  parser.add_argument("--workers",            default=30,             type=int)   # how many workers to use for exploring in parallel
   parser.add_argument("--seed",               default=0,             type=int)   # random seed for reproducibility
-  parser.add_argument("--traj_len",           default=1000,          type=int)   # max trajectory length for environment
+  parser.add_argument("--traj_len",           default=500,          type=int)   # max trajectory length for environment
   parser.add_argument("--prenormalize_steps", default=10000,         type=int)   # number of samples to get normalization stats 
-  parser.add_argument("--sample",             default=5000,          type=int)   # how many samples to do every iteration
+  parser.add_argument("--sample",             default=50000,          type=int)   # how many samples to do every iteration
 
   parser.add_argument("--layers",             default="128,128",     type=str)   # hidden layer sizes in policy
   parser.add_argument("--save_actor",         default=None,          type=str)   # where to save the actor (default=logdir)

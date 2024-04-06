@@ -1,5 +1,5 @@
 import numpy as np
-from preview_cmmp.utils import rot_from_rpy
+from oracles.utils import rot_from_rpy
 
 class biped_model:
     def __init__(self):

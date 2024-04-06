@@ -1,5 +1,5 @@
 import numpy as np
-from preview_cmmp.utils import riccati_solve,riccati_inverse
+from oracles.utils import riccati_solve,riccati_inverse
 class lqr:
     def __init__(self):
         pass

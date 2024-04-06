@@ -1,6 +1,7 @@
+env_entry: dtsd.envs.sim.dive.env
 sim_params:
-  model_path: dtsd/envs/rsc/models/mini_biped/xmls/biped_mvsc.xml
-  render: true
+  model_path: dtsd/envs/rsc/models/mini_biped/xmls/biped_simple.xml
+  render: false
 visualize_reference: false
 p_gain: 30
 d_gain: 0.5
@@ -12,8 +13,8 @@ observations:
   mode_latent: null
 terminations:
   epi_steps_max_thresh: 100
-  total_reward_min_thresh: -1000
-  base_pos_z_ref_error_thresh: 1000
+  total_reward_min_thresh: 0.5
+  base_pos_z_ref_error_thresh: 0.1
 rewards:
   not_allowed_bodies_terrain_contact_penalty: -0.3
   allowed_bodies_terrain_contact:
@@ -32,7 +33,6 @@ oracle:
   entry: oracles.prev_orac.oracle_var
   state_feedback: []
   scan_xlen_infront: 1.0
-env_entry: dtsd.envs.sim.dive.env
 initialisations:
   set_robot_h_on_terrain:
   - 0.5
@@ -76,7 +76,3 @@ mode_encoder:
   input_type: base_only
   offset_x0:
   - x
-logdir: /home1/lkrajan/drcl_projects/cpptf_v2/logs/mr_flip_rp_lp_vary/1/
-n_episodes: 10
-exp_log_path: ./logs/dive_rp_vary_oracle/1
-visualize_oracle: false

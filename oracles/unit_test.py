@@ -1,6 +1,6 @@
 import os,sys
 sys.path.append('./')
-from preview_cmmp.lqr_orac import oracle_var
+from oracles.lqr_orac import oracle_var
 import numpy as np
 import time 
 if __name__ == "__main__":

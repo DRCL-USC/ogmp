@@ -1,13 +1,11 @@
  
 drcl_biped:
-  qpos_len: 17
-  qel_len: 16
-  joint_offset: [
+  height_nominal: 0.5
+  jpos_nominal: [
                   0,0,0,0,0,
                   0,0,0,0,0,                  
                 ]
   ids:
-    qpos_slice: [0,17]
     base_pos: [0,1,2]
     base_ori: [3,4,5,6]
     jpos: [  
@@ -23,7 +21,7 @@ drcl_biped:
             15, # Right knee
             16 # Right foot 
         ]  
-    qvel_slice: [0,16]
+
     base_tvel: [0,1,2]
     base_avel: [3,4,5]
     jvel: [
@@ -45,41 +43,9 @@ drcl_biped:
     base_tacc: [0,1,2]
     base_aacc: [3,4,5]
 vclone:
-  qpos_len: 17
-  qel_len: 16
-  joint_offset: [
-                  0,0,0,0,0,
-                  0,0,0,0,0,                  
-                ]
+
   ids:
-    qpos_slice: [17,34]
     base_pos: [17,18,19]
     base_ori: [20,21,22,23]
-    jpos: [  
-            24, # Left hip yaw 
-            25, # Left hip roll
-            26, # Left hip pitch
-            27, # Left knee
-            28, # Left foot
-
-            29, # Right hip yaw 
-            30, # Right hip roll
-            31, # Right hip pitch 
-            32, # Right knee
-            33 # Right foot 
-          ]
-    qvel_slice: [16,32]
     base_tvel: [16,17,18]
     base_avel: [19,20,21]
-    jvel: [
-            22, 
-            23, 
-            24, 
-            25, 
-            26, 
-            27, 
-            28, 
-            29, 
-            30, 
-            31
-          ] 

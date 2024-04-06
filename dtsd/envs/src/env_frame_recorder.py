@@ -1,13 +1,11 @@
 # for recording episodes
 from PIL import Image
 import mediapy as media
-import glfw
 import os
-from dm_control import mujoco
 import numpy as np
 from .misc_funcs import *
 from tqdm import tqdm
-import matplotlib.pyplot as plt
+
 class frame_recorder_dummy():
 
     def __init__(self, conf):

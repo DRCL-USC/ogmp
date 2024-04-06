@@ -66,7 +66,6 @@ class Buffer:
 
   def _finish_buffer(self):
 
-    print(np.array(self.states).shape)
     self.states  = torch.Tensor(np.array(self.states))
     self.actions = torch.Tensor(np.array(self.actions))
     self.rewards = torch.Tensor(np.array(self.rewards))
@@ -317,7 +316,7 @@ class PPO:
 def run_experiment(args,**kwargs):
     torch.set_num_threads(1)
 
-    from util import create_logger, env_factory, eval_policy_trng, train_normalizer
+    from src.util import create_logger, env_factory, eval_policy_trng, train_normalizer
 
     from nn.critic import FF_V, LSTM_V
     from nn.actor import FF_Stochastic_Actor, LSTM_Stochastic_Actor

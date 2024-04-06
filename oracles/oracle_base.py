@@ -1,8 +1,9 @@
 import os,sys
 sys.path.append('./')
-from preview_cmmp.models import biped_model
+from oracles.models import biped_model
 import numpy as np
-from dm_control.utils import transformations
+from dtsd.envs.src import transformations
+
 class oracle:
     def __init__(self,terrain_map_resolution = [0.001,0.001]):
         self.ddt = 0.0125

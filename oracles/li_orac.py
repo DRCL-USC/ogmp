@@ -1,8 +1,8 @@
-import os,sys
+import sys
 sys.path.append('./')
-from preview_cmmp.oracle_base import oracle
-from preview_cmmp.utils import square_wave_gen, W, convert2draw_vec
-from preview_cmmp.draw import animate_traj,animate_traj_rot
+from oracles.oracle_base import oracle
+from oracles.utils import square_wave_gen, W, convert2draw_vec
+from oracles.draw import animate_traj,animate_traj_rot
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker

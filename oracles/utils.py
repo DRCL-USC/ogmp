@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.spatial.transform import Rotation as Rot
-import enum
 import scipy as sc
+import enum
 import matplotlib.pyplot as plt
 
 class legs(enum.Enum):
