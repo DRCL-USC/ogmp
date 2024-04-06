@@ -31,13 +31,13 @@ tested in python 3.8.10
 
 ## Usage
 
-To train the policy for task (say parkour), run
-
-    python train.py --exp_file exp_confs/parkour.yaml
-
-Similarly test the policy in paper, run:
+To test the policy in paper,for task (say parkour), run
     
-    python test.py --exp_file exp_confs/parkour_test.yaml
+    python3 test.py --tstng_conf_path ./exp_confs/parkour_test.yaml --render_onscreen
+
+Similarly to train the best policy from the paper, run 
+
+    python3 train.py --exp_conf_path ./exp_confs/parkour.yaml --recurrent --logdir ./results/
 
 ## High-level overview
 
