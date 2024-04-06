@@ -1,0 +1,7 @@
+exp_names,observations
+0,"{'robot_state': None, 'clock_osu': None, 'mode_latent': None}"
+1,"{'robot_state': None, 'mode_latent': None}"
+2,"{'robot_state': None, 'clock_osu': None, 'terrain_xlen_infront': 0.5}"
+3,"{'robot_state': None, 'terrain_xlen_infront': 0.5}"
+4,"{'robot_state': None, 'clock_osu': None, 'mode_latent': None, 'terrain_xlen_infront': 0.5}"
+5,"{'robot_state': None, 'mode_latent': None, 'terrain_xlen_infront': 0.5}"

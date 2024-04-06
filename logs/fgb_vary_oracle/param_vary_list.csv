@@ -1,0 +1,13 @@
+exp_names,terminations/base_pos_x_ref_error_thresh,oracle/entry
+0,0.1,preview_cmmp.preview_v3.prev_rtm
+1,0.1,preview_cmmp.prev_orac.oracle_var
+2,0.1,preview_cmmp.li_orac.oracle_var
+3,0.1,preview_cmmp.lqr_orac.oracle_var
+4,0.2,preview_cmmp.preview_v3.prev_rtm
+5,0.2,preview_cmmp.prev_orac.oracle_var
+6,0.2,preview_cmmp.li_orac.oracle_var
+7,0.2,preview_cmmp.lqr_orac.oracle_var
+8,0.4,preview_cmmp.preview_v3.prev_rtm
+9,0.4,preview_cmmp.prev_orac.oracle_var
+10,0.4,preview_cmmp.li_orac.oracle_var
+11,0.4,preview_cmmp.lqr_orac.oracle_var

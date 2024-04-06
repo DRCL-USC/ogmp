@@ -1,0 +1,72 @@
+# config for the test
+paths2policies: [
+                  ./logs/fgb_vary_obs/4/,
+                ]
+n_rollouts: 6
+nop: 2
+test_name_suffix: '100_sc2'
+render: false
+record: true
+# custom environemnt config for overwriting the default config
+env_entry: dtsd.envs.sim.parkour.env
+terminations:
+  epi_steps_max_thresh: 100
+  total_reward_min_thresh: -10000 # deactivate this termination
+  base_pos_x_ref_error_thresh: 10000 # deactivate this termination
+oracle:
+  prediction_horizon: 30
+  entry: preview_cmmp.prev_orac.oracle_var
+  state_feedback:
+  - x
+  - y
+  - z
+  - x_dot
+  - z_dot
+  - y_dot
+  scan_xlen_infront: 1.0
+task:
+  name: parkour
+  sample_type: uniform
+  track_x_start:  0.0
+  track_x_length: 9.0
+  modes:
+    gap:
+      manipulate_terrain: true
+      param_names:
+      - start
+      - length
+      - height
+      param_dist:
+        type: continuous
+        sampling: uniform
+        support:
+        - - 0.3
+          - 0.2
+          - -0.5
+        - - 0.6
+          - 0.35
+          - -0.5
+    block:
+      manipulate_terrain: true
+      param_names:
+      - start
+      - length
+      - height
+      param_dist:
+        type: continuous
+        sampling: uniform
+        support:
+        - - 0.45
+          - 0.3
+          - 0.2
+        - - 0.45
+          - 0.5
+          - 0.35
+mode_encoder:
+  model_path: "logs/encoders/fgb_fx0_s\u03C1_ae32/prtm3_vx1/dim_2/model_0.pt"
+  input_type: base_only
+  offset_x0:
+  - x
+# sim_params:
+#   model_path: dtsd/envs/rsc/models/mini_biped/xmls/biped_mvsc.xml
+#   render: false

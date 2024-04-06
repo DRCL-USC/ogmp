@@ -1,0 +1,81 @@
+sim_params:
+  model_path: dtsd/envs/rsc/models/mini_biped/xmls/biped_simple.xml
+  render: false
+visualize_reference: false
+p_gain: 30
+d_gain: 0.5
+simrate: 60
+robot: drcl_biped
+observations:
+  robot_state: null
+  clock: null
+  mode_latent: null
+terminations:
+  epi_steps_max_thresh: 100
+  total_reward_min_thresh: 0.5
+  com_height_min_thresh: 0.3
+  base_pos_z_ref_error_thresh: 0.8
+rewards:
+  not_allowed_bodies_terrain_contact_penalty: -0.3
+  allowed_bodies_terrain_contact:
+  - L_toe
+  - R_toe
+  base_ori_error_exp_weight: 5
+  base_pos_error_exp_weight: 5
+  ctrl_mag_exp_weight: 0.01
+  scales:
+    base_ori_ref_error: 0.475
+    base_pos_ref_error: 0.475
+    ctrl_mag: 0.05
+    penalize_not_allowed_bodies_terrain_contact: 1.0
+oracle:
+  prediction_horizon: 30
+  entry: preview_cmmp.prev_orac.oracle_var
+  state_feedback: []
+  scan_xlen_infront: 1.0
+env_entry: dtsd.envs.sim.biped_parkour.biped_env
+initialisations:
+  set_robot_h_on_terrain:
+  - 0.5
+  - 0.5
+actions:
+  pd_targets:
+  - 0
+  - 10
+task:
+  name: parkour
+  sample_type: uniform
+  track_x_length: 0.1
+  track_elements:
+    pitch_flip:
+      manipulate_terrain: true
+      param_names:
+      - height
+      - delta_theta
+      param_dist:
+        type: grid
+        sampling: uniform
+        support:
+        - - 1.0
+          - -6.28
+        - - 1.75
+          - 6.28
+    roll_flip:
+      manipulate_terrain: true
+      param_names:
+      - height
+      - delta_theta
+      param_dist:
+        type: grid
+        sampling: uniform
+        support:
+        - - 1.0
+          - -6.28
+        - - 1.75
+          - 6.28
+mode_encoder:
+  model_path: "logs/encoders/flips_s\u03C1_ae32_lp_rpf/dim_2/model_0.pt"
+  input_type: base_only
+  offset_x0:
+  - x
+logdir: /home1/lkrajan/drcl_projects/cpptf_v2/logs/mr_flip_rp_lp_vary/17/

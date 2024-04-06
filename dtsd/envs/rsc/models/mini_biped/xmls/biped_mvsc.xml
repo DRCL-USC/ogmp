@@ -1,0 +1,246 @@
+<mujoco model="mini_biped">
+
+    <!-- default sim settings -->
+
+	<!-- <compiler angle="radian" meshdir="../meshes/" /> -->
+	<!-- <size njmax="500" nconmax="100" /> -->
+    
+    <!-- osudrl sim settings -->
+	<compiler angle="radian" meshdir="../meshes/" />
+	<size njmax="500" nconmax="100" />
+  	<option timestep='0.0005' iterations='50' solver='PGS' gravity='0 0 -9.81'/>
+
+
+	<default>
+		<default class="force-torque">
+        	<site type="box" size=".01 .01 .02" rgba="1 0 0 1" />
+      	</default>
+		<default class="collision">
+			<geom group="1" rgba="0.0 0.0 0.0 0.0"/>
+	  	</default>
+		<default class="visual">
+        	<geom contype="0" conaffinity="0" group="2"/>
+      	</default>
+
+	</default>
+
+	<visual>
+		<headlight diffuse="0.6 0.6 0.6" ambient="0.3 0.3 0.3" specular="0 0 0" />
+		<rgba haze="0.15 0.25 0.35 1" />
+
+	    <global offheight="2160" offwidth="3840"/>
+    	<quality offsamples="8"/>
+
+
+	</visual>
+
+    <asset>
+		<mesh name="body" file="body.STL" />
+		<mesh name="L_hip1" file="L_hip1.STL" />
+		<mesh name="L_hip2" file="L_hip2.STL" />
+		<mesh name="L_thigh" file="L_thigh_fin.stl" />
+		<mesh name="L_calf" file="L_calf.stl" />
+		<!-- <mesh name="L_calf" file="l_calf.stl" /> -->
+		<mesh name="L_foot" file="L_foot.stl" />
+		<!-- <mesh name="L_foot" file="l_foot.stl" /> -->
+
+		<mesh name="R_hip1" file="R_hip1.STL" />
+		<mesh name="R_hip2" file="R_hip2.STL" />
+		<mesh name="R_thigh" file="R_thigh_fin.STL" />
+		<mesh name="R_calf" file="R_calf.stl" />
+		<!-- <mesh name="R_calf" file="r_calf.stl" /> -->
+		<mesh name="R_foot" file="R_foot.stl" />
+		<!-- <mesh name="R_foot" file="r_foot.stl" /> -->
+
+		<texture type="skybox" builtin="gradient" rgb1="0.3 0.5 0.7" rgb2="0 0 0" width="512" height="3072" />
+		<texture type="2d" name="groundplane" builtin="checker" mark="edge" rgb1="0.2 0.3 0.4" rgb2="0.1 0.2 0.3" markrgb="0.8 0.8 0.8" width="300" height="300" />
+		<material name="groundplane" texture="groundplane" texuniform="true" texrepeat="5 5" reflectance="0.5" />
+		<!-- full -->
+		<!-- <hfield name='terrain' nrow='500' ncol='500' size='10 10 2.0 0.1'/> -->
+		<!-- fgb track -->
+		<hfield name='terrain' nrow='500' ncol='500' size='10 0.5 2.0 0.05'/>
+		<!-- dive strip -->
+		<!-- <hfield name='terrain' nrow='500' ncol='500' size='3.0 3.0 2.0 0.1'/> -->
+
+
+	</asset>
+	<worldbody>
+
+		<!-- for motion traces -->
+		<!-- <light pos="0 0 10" dir="0 0  -1"  directional="true"  castshadow="false" />  -->
+
+		<!-- <light pos="3 0 3" dir="-1 0  -1"  directional="true"  castshadow="false"/> 
+		<light pos="-3 0 3" dir="1 0  -1"  directional="true"  castshadow="false"/>  -->
+
+
+
+		<!-- for video -->		
+		<light name="spotlight0"  mode="targetbodycom" target="trunk" pos="0 0 10" cutoff="60"  castshadow="false"/>
+		<light name="spotlight1"  mode="targetbodycom" target="trunk" pos="0.5 0 10" cutoff="60"/>
+
+		<!-- <light pos="0.0 0.0 1.0" mode="trackcom" diffuse="1 1 1" specular=".3 .3 .3"/>
+		<light pos="0 0.0 10.0" mode="targetbodycom" target="trunk" diffuse=".8 .8 .8" specular=".3 .3 .3"/> -->
+
+		<!-- <geom name="floor" size="0 0 .125" type="plane" material="groundplane" conaffinity="15" condim="3" /> -->
+		<geom name='terrain' size="0 0 .125" conaffinity="15" condim="3"  pos="0 0 0" euler="0 0 0" material="groundplane" type='hfield' hfield='terrain'/>		
+
+		<!-- <geom name="floor" size="0 0 .125" type="plane" conaffinity="15" condim="3" /> -->
+
+		<body name="trunk" pos="0 0 0.5">
+			<camera name="side" pos="0 -3 0.0" euler="1.57 0 0" mode="track"/>
+			<camera name="back" pos="-3 0 1" xyaxes="0 -1 0 1 0 2" mode="trackcom"/>
+			<camera name="track" pos="0 -3 1" zaxis="0 -1 0.5" mode="track" />
+
+			<freejoint name="root" />
+			<site name="root" class="force-torque"/>
+			<!-- base link -->
+			<inertial pos="0.0 0.0 0.0" mass="5.89" diaginertia="0.0479073  0.03785748 0.02538835" />
+			<geom class="visual" type="mesh" rgba="0.2 0.2 0.2 1.0" mesh="body" />
+			<geom class="collision" size="0.0625 0.095 0.124" type="box"  />
+			<geom class="collision" size="0.0005 0.0005 0.0005" type="box"  /> 
+
+			<body name="L_hip" pos="0 0.047 -0.1265">
+				<joint name="L_hip_joint" pos="0 0 0" axis="0 0 1" limited="true" range="-0.261799 0.261799" damping="0.1" frictionloss="0.1" />
+				<!-- fixed inertial properties -->
+				<inertial pos="0.0651881 0.0105682 -0.05877" quat="-0.0733308 0.865238 0.13671 0.476756" mass="0.874" diaginertia="0.00147219 0.00132639 0.000517101" />
+				<!-- hip1 -->
+				<geom class="visual" type="mesh" rgba="0.2 0.2 0.2 1.0" mesh="L_hip1"/>
+				<geom class="collision" size="5e-05 5e-05 5e-05" pos="0.015 0 -0.002" type="box" />
+				<geom class="collision" size="0.045 0.02" pos="0.079 0.015 -0.0705" quat="0.707107 0 0.707107 0" type="cylinder" />
+				
+				<body name="L_hip2" pos="0.0465 0.015 -0.0705">
+					<!-- fixed inertial properties -->
+					<inertial pos="-0.0565847 -0.0143919 0" quat="0.490371 0.490371 0.509447 0.509447" mass="0.745" diaginertia="0.000770832 0.000552938 0.000493077" />
+					<joint name="L_hip2_joint" pos="0 0 0" axis="1 0 0" limited="true" range="-0.523599 0.261799" damping="0.1" frictionloss="0.1" />
+					<!-- hip2 -->				
+					<geom class="visual" type="mesh" rgba="0.2 0.2 0.2 1.0" mesh="L_hip2"/>
+					<geom class="collision" size="5e-06 5e-06 5e-06" pos="-0.1 0 0" type="box"  />
+					<geom class="collision" size="0.045 0.02" pos="-0.06 -0.015 0" quat="0.707107 -0.707107 0 0" type="cylinder" />
+					
+					<body name="L_thigh" pos="-0.06 0.018 0" quat="0.891007 0 0.45399 0">
+						<!-- fixed inertial properties -->
+						<inertial pos="-4.85963e-05 0.0199702 -0.0592828" quat="0.98238 -0.186894 0.000253273 0.000716486" mass="1.942" diaginertia="0.0111784 0.0106783 0.00282909" />
+						<joint name="L_thigh_joint" pos="0 0 0" axis="0 1 0" limited="true" range="-3.14 3.14" />
+						<!-- thigh -->				
+						<geom class="visual" type="mesh" rgba="0.5 0.5 0.5 1.0" mesh="L_thigh"/> 
+						<geom class="collision" size="0.03 0.0175 0.09" pos="0 0.0175 -0.09" type="box" />
+						<geom class="collision" size="0.045 0.02" pos="0 0.0625 0" quat="0.707107 -0.707107 0 0" type="cylinder" />
+						<geom class="collision" size="0.045 0.02" pos="0 -0.0225 -0.097" quat="0.707107 -0.707107 0 0" type="cylinder" />
+						
+						<body name="L_calf" pos="0 0 -0.22" quat="0.587785 0 -0.809017 0">
+							<!-- fixed inertial properties -->
+							<inertial pos="0 0.020417 -0.1141" mass="0.303" diaginertia="0.001911 0.00191038 6.8352e-05" />
+							<joint name="L_calf_joint" pos="0 0 0" axis="0 1 0" limited="true" range="-3.14 3.14" />
+							<!-- calf -->										
+							<geom class="visual" type="mesh" rgba="0.5 0.5 0.5 1.0" mesh="L_calf"/>
+							<geom class="collision" size="0.015 0.1" pos="0 0.02 -0.11" type="cylinder"  />
+							
+							<body name="L_toe" pos="0 0 -0.22" quat="0.891007 0 0.45399 0">
+								<!-- fixed inertial properties -->
+								<inertial pos="0.010569 0.017949 -0.017118" quat="0.5 0.5 0.5 0.5" mass="0.214" diaginertia="0.000290752 0.000249491 5.7298e-05" />
+								<joint name="L_toe_joint" pos="0 0 0" axis="0 1 0" limited="true" range="-1.4 1.4" />
+								<!-- toe -->																		
+								<geom class="visual" type="mesh" rgba="0.5 0.5 0.5 1.0" mesh="L_foot"/>
+								<geom class="collision" size="0.075 0.01 0.02" pos="0.01 0.0194 -0.02" type="box"  />
+
+							</body>
+						</body>
+					</body>
+				</body>
+			</body>
+			<body name="R_hip" pos="0 -0.047 -0.1265">
+				<!-- fixed inertial properties -->
+				<inertial pos="0.0651881 -0.011743 -0.05877" quat="0.054396 0.871604 -0.102394 0.476301" mass="0.874" diaginertia="0.00144737 0.00130361 0.000518878" />
+				<joint name="R_hip_joint" pos="0 0 0" axis="0 0 1" limited="true" range="-0.261799 0.261799" damping="0.1" frictionloss="0.1" />
+				<!-- hip1 -->
+				<geom class="visual" type="mesh" rgba="0.2 0.2 0.2 1.0" mesh="R_hip1"/>
+				<geom class="collision" size="5e-05 5e-05 5e-05" pos="0.015 0 -0.002" type="box"  />
+				<geom class="collision" size="0.045 0.02" pos="0.079 -0.015 -0.0705" quat="0.707107 0 0.707107 0" type="cylinder" />
+			
+				<body name="R_hip2" pos="0.0465 -0.015 -0.0705">
+					<!-- fixed inertial properties -->
+					<inertial pos="-0.0565847 0.0117826 0" quat="0.554078 0.554078 0.439315 0.439315" mass="0.745" diaginertia="0.000783544 0.000603818 0.000531245" />
+					<joint name="R_hip2_joint" pos="0 0 0" axis="1 0 0" limited="true" range="-0.261799 0.523599" damping="0.1" frictionloss="0.1" />
+					<!-- hip2 -->
+					<geom class="visual" type="mesh" rgba="0.2 0.2 0.2 1.0" mesh="R_hip2"/>
+					<geom class="collision" size="5e-06 5e-06 5e-06" pos="-0.1 0 0" type="box" />
+					<geom class="collision" size="0.045 0.02" pos="-0.06 0.015 0" quat="0.707107 -0.707107 0 0" type="cylinder" />
+
+					<body name="R_thigh" pos="-0.06 -0.018 0" quat="0.891007 0 0.45399 0">
+						<!-- fixed inertial properties -->
+						<inertial pos="-4.85963e-05 -0.0199702 -0.0592828" quat="0.98238 0.186894 0.000253273 -0.000716486" mass="1.942" diaginertia="0.0111784 0.0106783 0.00282909" />
+						<joint name="R_thigh_joint" pos="0 0 0" axis="0 1 0" limited="true" range="-3.14 3.14" />
+						<!-- thigh -->
+						<geom class="visual" type="mesh" rgba="0.5 0.5 0.5 1.0" mesh="R_thigh"/> 
+						<geom class="collision" size="0.03 0.0175 0.09" pos="0 -0.0175 -0.09" type="box" />
+						<geom class="collision" size="0.045 0.02" pos="0 -0.0625 0" quat="0.707107 -0.707107 0 0" type="cylinder" />
+						<geom class="collision" size="0.045 0.02" pos="0 0.0225 -0.097" quat="0.707107 -0.707107 0 0" type="cylinder"  />
+						
+						<body name="R_calf" pos="0 0 -0.22" quat="0.587785 0 -0.809017 0">
+							<!-- fixed inertial properties -->
+							<inertial pos="0 -0.020417 -0.1141" mass="0.303" diaginertia="0.001911 0.00191038 6.8352e-05" />
+							<joint name="R_calf_joint" pos="0 0 0" axis="0 1 0" limited="true" range="-3.14 3.14" />
+							<!-- calf -->
+							<geom class="visual" type="mesh" rgba="0.5 0.5 0.5 1.0" mesh="R_calf"/>
+							<geom class="collision" size="0.015 0.1" pos="0 -0.02 -0.11" type="cylinder" />
+							
+							<body name="R_toe" pos="0 0 -0.22" quat="0.891007 0 0.45399 0">
+								<!-- fixed inertial properties -->
+								<inertial pos="0.010569 -0.017949 -0.017118" quat="0.5 0.5 0.5 0.5" mass="0.214" diaginertia="0.000290752 0.000249491 5.7298e-05" />
+								<joint name="R_toe_joint" pos="0 0 0" axis="0 1 0" limited="true" range="-1.4 1.4" />
+								<!-- toe -->
+								<geom class="visual" type="mesh" rgba="0.5 0.5 0.5 1.0" mesh="R_foot"/>
+								<geom class="collision" size="0.075 0.01 0.02" pos="0.01 -0.0194 -0.02" type="box" />
+							
+							</body>
+						</body>
+					</body>
+				</body>
+			</body>
+		</body>
+		
+		<body name="v_trunk" pos="0 0 0.5">
+						<freejoint name="v_root" />
+			<geom class="visual" type="box" size="0.0625 0.095 0.124"  rgba="0 0.5 0 0.5"/>
+		</body> 
+	
+	
+	</worldbody>
+
+	<actuator>
+		<motor name="L_hip_joint" joint="L_hip_joint" ctrllimited="true" ctrlrange="-30 30" />
+		<motor name="L_hip2_joint" joint="L_hip2_joint" ctrllimited="true" ctrlrange="-30 30"/>
+		<motor name="L_thigh_joint" joint="L_thigh_joint" ctrllimited="true" ctrlrange="-30 30"/>
+		<motor name="L_calf_joint" joint="L_calf_joint" ctrllimited="true" ctrlrange="-50 50"/>
+		<motor name="L_toe_joint" joint="L_toe_joint" ctrllimited="true" ctrlrange="-30 30" />
+
+		<motor name="R_hip_joint" joint="R_hip_joint" ctrllimited="true" ctrlrange="-30 30"/>
+		<motor name="R_hip2_joint" joint="R_hip2_joint" ctrllimited="true" ctrlrange="-30 30"/>
+		<motor name="R_thigh_joint" joint="R_thigh_joint" ctrllimited="true" ctrlrange="-30 30" />
+		<motor name="R_calf_joint" joint="R_calf_joint" ctrllimited="true" ctrlrange="-50 50"/>
+		<motor name="R_toe_joint" joint="R_toe_joint" ctrllimited="true" ctrlrange="-30 30"/>
+	</actuator>	
+	<sensor>
+		<accelerometer name="torso_accel"    site="root"/>
+		<velocimeter name="torso_vel"        site="root"/>
+		<gyro name="torso_gyro"              site="root"/>
+	</sensor>
+
+
+
+
+	<!-- <equality>
+		<weld name="world_root" active="true" body1="trunk" relpose="0 0 -0.85 1 0 0 0"/>
+	</equality> -->
+	<contact>
+
+		<!-- TODO: remove later -->
+		<exclude body1="L_thigh" body2="L_hip" />
+		<exclude body1="R_thigh" body2="R_hip" />
+
+	</contact> 
+
+	
+
+
+</mujoco>

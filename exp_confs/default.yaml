@@ -1,0 +1,29 @@
+sim_params:
+  render: true
+  init_viewer_every_reset: false
+  model_path: "dtsd/envs/rsc/models/mini_biped/xmls/biped_simple_osudrl.xml"
+
+visualize_reference: false
+p_gain: 30
+d_gain: 0.5
+simrate: 60
+robot: drcl_biped
+observations: # order matters to not break the old results
+  robot_state_osu: null
+  clock_osu: null
+  command_speed_osu: null
+terminations:
+  total_reward_min_thresh: 0.3
+  com_height_min_thresh: 0.2
+rewards:
+  orientation_error_exp_weight: 5
+  joint_error_exp_weight: [0.15, 0.15, 0.1, 0.05, 0.05, 0.15, 0.15, 0.1, 0.05, 0.05]
+  forward_diff_thresh: 0.05
+  y_vel_thresh: 0.03
+  straight_diff_thresh: 0.05
+  scales:
+    orientation_error: 0.300
+    joint_error_ref: 0.200
+    forward_diff: 0.200
+    y_vel: 0.200
+    straight_diff: 0.050    

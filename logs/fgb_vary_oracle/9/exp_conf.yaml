@@ -1,0 +1,93 @@
+sim_params:
+  model_path: dtsd/envs/rsc/models/mini_biped/xmls/biped_simple.xml
+  render: false
+  init_viewer_every_reset: false
+visualize_reference: false
+p_gain: 30
+d_gain: 0.5
+simrate: 60
+robot: drcl_biped
+observations:
+  robot_state: null
+  clock_osu: null
+  mode_latent: null
+  terrain_xlen_infront: 0.5
+terminations:
+  epi_steps_max_thresh: 200
+  total_reward_min_thresh: 0.5
+  com_height_min_thresh: 0.3
+  base_pos_x_ref_error_thresh: 0.4
+rewards:
+  not_allowed_bodies_terrain_contact_penalty: -0.3
+  allowed_bodies_terrain_contact:
+  - L_toe
+  - R_toe
+  base_ori_error_exp_weight: 5
+  base_pos_error_exp_weight: 5
+  ctrl_mag_exp_weight: 0.01
+  scales:
+    base_ori_ref_error: 0.475
+    base_pos_ref_error: 0.475
+    ctrl_mag: 0.05
+    penalize_not_allowed_bodies_terrain_contact: 1.0
+oracle:
+  prediction_horizon: 30
+  entry: preview_cmmp.prev_orac.oracle_var
+  state_feedback:
+  - x
+  - y
+  - z
+  - x_dot
+  - z_dot
+  - y_dot
+  scan_xlen_infront: 1.0
+env_entry: dtsd.envs.sim.biped_parkour.biped_env
+initialisations:
+  set_robot_nominal: null
+actions:
+  pd_targets:
+  - 0
+  - 10
+task:
+  name: parkour
+  sample_type: uniform
+  track_x_length: 3.0
+  track_elements:
+    gap:
+      manipulate_terrain: true
+      param_names:
+      - start
+      - length
+      - height
+      param_dist:
+        type: grid
+        sampling: uniform
+        support:
+        - - 0.3
+          - 0.2
+          - -0.5
+        - - 0.6
+          - 0.35
+          - -0.5
+    block:
+      manipulate_terrain: true
+      param_names:
+      - start
+      - length
+      - height
+      param_dist:
+        type: grid
+        sampling: uniform
+        support:
+        - - 0.45
+          - 0.3
+          - 0.2
+        - - 0.45
+          - 0.5
+          - 0.35
+mode_encoder:
+  model_path: "logs/encoders/fgb_fx0_s\u03C1_ae32/prtm3_vx1/dim_2/model_0.pt"
+  input_type: base_only
+  offset_x0:
+  - x
+logdir: /home1/lkrajan/drcl_projects/cpptf_v2/logs/mr_vary_oracles/9/

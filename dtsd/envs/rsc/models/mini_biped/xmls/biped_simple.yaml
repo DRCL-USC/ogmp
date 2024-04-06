@@ -1,0 +1,51 @@
+ 
+drcl_biped:
+  height_nominal: 0.5
+  jpos_nominal: [
+                  0,0,0,0,0,
+                  0,0,0,0,0,                  
+                ]
+  ids:
+    base_pos: [0,1,2]
+    base_ori: [3,4,5,6]
+    jpos: [  
+            7, # Left hip yaw 
+            8, # Left hip roll
+            9, # Left hip pitch
+            10, # Left knee
+            11, # Left foot
+
+            12, # Right hip yaw 
+            13, # Right hip roll
+            14, # Right hip pitch 
+            15, # Right knee
+            16 # Right foot 
+        ]  
+
+    base_tvel: [0,1,2]
+    base_avel: [3,4,5]
+    jvel: [
+            6, 
+            7, 
+            8, 
+            9, 
+            10, 
+            11, 
+            12, 
+            13, 
+            14, 
+            15
+          ] 
+    jctrl:
+            [
+              0,1,2,3,4,5,6,7,8,9
+            ]
+    base_tacc: [0,1,2]
+    base_aacc: [3,4,5]
+vclone:
+
+  ids:
+    base_pos: [17,18,19]
+    base_ori: [20,21,22,23]
+    base_tvel: [16,17,18]
+    base_avel: [19,20,21]

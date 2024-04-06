@@ -1,0 +1,4 @@
+exp_names,prev_rtm
+0,"{'prediction_horizon': 30, 'entry': 'preview_cmmp.preview_v3.prev_rtm', 'state_feedback': ['x', 'y', 'z', 'x_dot', 'z_dot', 'y_dot'], 'scan_xlen_infront': 1.0}"
+1,"{'prediction_horizon': 15, 'entry': 'preview_cmmp.preview_v3.prev_rtm', 'state_feedback': ['x', 'y', 'z', 'x_dot', 'z_dot', 'y_dot'], 'scan_xlen_infront': 0.5}"
+2,"{'prediction_horizon': 7, 'entry': 'preview_cmmp.preview_v3.prev_rtm', 'state_feedback': ['x', 'y', 'z', 'x_dot', 'z_dot', 'y_dot'], 'scan_xlen_infront': 0.25}"

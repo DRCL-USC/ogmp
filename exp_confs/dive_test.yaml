@@ -1,0 +1,44 @@
+test_setup:
+  n_episodes: 10
+  exp_log_path: ./logs/dive_rp_vary_oracle/1
+# configs below will overwrite the default/training/depreciated configs
+sim_params:
+  model_path: dtsd/envs/rsc/models/mini_biped/xmls/biped_simple.xml
+  # model_path: dtsd/envs/rsc/models/mini_biped/xmls/biped_mvsc.xml
+  render: false
+env_entry: dtsd.envs.sim.dive.env
+terminations:
+  epi_steps_max_thresh: 100
+  total_reward_min_thresh: -1000 #0.6
+  base_pos_z_ref_error_thresh: 1000 #0.4
+# flips
+task:
+  name: dive
+  sample_type: uniform
+  modes:
+    pitch_flip:
+      manipulate_terrain: true
+      param_names:
+      - height
+      - delta_theta
+      param_dist:
+        type: grid
+        sampling: uniform
+        support:
+        - - 1.0
+          - -6.28
+        - - 1.75
+          - 6.28
+    roll_flip:
+      manipulate_terrain: true
+      param_names:
+      - height
+      - delta_theta
+      param_dist:
+        type: grid
+        sampling: uniform
+        support:
+        - - 1.0
+          - -6.28
+        - - 1.75
+          - 6.28

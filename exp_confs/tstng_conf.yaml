@@ -1,0 +1,668 @@
+# comment abbreviations
+test_setup:
+  # lms_test_x0:
+  #   nop: 3
+  #   test_name_suffix: 'ssd30_OD2'
+  #   n_rollout_logpath: "./results/fgb_vary_obs/0/n_rollouts_test/100_rollouts_10m_track_sc/"
+  #   latent_density_per_dim: 30
+  #   search_space_scale: 2.0
+  #   search_space_type: square # or circle
+
+  # lms_test_tr:
+  #   nop: 3
+  #   test_name_suffix: 'ssd30_OD2'
+  #   n_rollout_logpath: "./results/fgb_vary_obs/0/n_rollouts_test/100_rollouts_10m_track_sc/"
+  #   latent_density_per_dim: 30
+  #   search_space_scale: 2.0
+  #   search_space_type: square # or circle
+  #   task:
+  #     name: parkour
+  #     sample_type: uniform
+  #     track_x_length: 0.5
+  #     track_elements: # just one variant
+  #       gap:
+  #         manipulate_terrain: true
+  #         param_names:
+  #         - start
+  #         - length
+  #         - height
+  #         param_dist:
+  #           type: grid
+  #           sampling: uniform
+  #           support:
+  #           - - 0.5
+  #             - 0.3
+  #             - -0.5
+  #           - - 0.5
+  #             - 0.3
+  #             - -0.5
+
+
+  # mode_parameter_test:
+  #   nop: 3
+  #   test_name_suffix: '60_mc'
+  #   paths2trngs: [
+  #                 # './logs/bg_b_pr3_2_ts_3/',
+  #                 # './logs/bg_b_pr3_2_ts_3l/',
+  #                 # './logs/bg_b_pr3_2_ts_4/',
+  #                 './logs/fgb_vary_obs/',
+  #               ]
+  #   only_test: ['0'] #'4'] 
+  #   max_epi_steps:  60 #300
+  #   name: parkour
+  #   sample_type: uniform 
+  #   track_x_length: 0.1 # 3.0
+  #   track_element:
+  #     gap:
+  #         manipulate_terrain : True
+  #         param_names: [start,length,height]
+  #         param_0:
+  #           start: 0.1
+  #           stop: 0.9
+  #           num: 5
+  #         param_1:
+  #           start: 0.15
+  #           stop: 0.55
+  #           num: 5
+  #         param_2:
+  #           start: -0.5
+  #           stop: -0.5
+  #           num: 1
+  #     # # v2
+  #     block:
+  #         manipulate_terrain : True 
+  #         param_names: [start,length,height]
+  #         param_0:
+  #           start: 0.45
+  #           stop: 0.45
+  #           num: 1
+  #         param_1:
+  #           start: 0.2 
+  #           stop: 0.6
+  #           num: 5 #10
+  #         param_2:
+  #           start: 0.1
+  #           stop:  0.45
+  #           num:  5 #10
+  #     # v3
+  #     # block:
+  #     #     manipulate_terrain : True 
+  #     #     param_names: [start,length,height]
+  #     #     param_0:
+  #     #       start: 0.2
+  #     #       stop: 0.6
+  #     #       num: 10
+  #     #     param_1:
+  #     #       start: 0.3
+  #     #       stop: 0.3
+  #     #       num: 1
+  #     #     param_2:
+  #     #       start: 0.1
+  #     #       stop:  0.45
+  #     #       num: 10
+  #     # flat:
+  #     #   manipulate_terrain : False
+  #     #   param_names: [goal_x]
+  #     #   param_0:
+  #     #     start: 0.25
+  #     #     stop: 3.0
+  #     #     num: 10
+
+
+  # n_rollouts_test:
+  #   paths2trngs: [
+  #                 # ./logs/fgb_vary_horizon/,
+  #                 # ./logs/fgb_vary_rho/,
+  #                 # ./logs/fgb_vary_obs/,
+  #                 # ./logs/fgb_vary_oracle/,
+
+  #                 # ./logs/mr_flip_rp_lp_vary/,
+  #                 ./logs/mr_f4/
+
+  #               ]
+  #   n_rollouts: 100
+  #   nop: 3
+  #   plot_sre_vs_n_rollouts: true
+  #   test_name_suffix: '120_sc2'
+  #   render: false
+  #   record: false
+
+
+  # collect_rollouts:
+    # paths2trngs: [
+    #               # ./logs/fgb_vary_horizon/,
+    #               # ./logs/fgb_vary_rho/,
+    #               # ./logs/fgb_vary_obs/,
+    #               # ./logs/fgb_vary_oracle/,
+
+    #               # ./logs/mr_flip_rp_lp_vary/,
+    #               ./logs/mr_f4/
+    #             ]
+    # paths2trngs: null
+    # n_rollouts: 100
+    # nop: 3
+    # plot_sre_vs_n_rollouts: true
+    # test_name_suffix: '100_sc2'
+    # render: false
+    # record: false
+
+  # simple visual hand-made test for a policy
+  n_episodes: 1
+
+  # legacy policies
+  # "best" results
+  # exp_log_path: ./logs/legacy/bg_b_pr3_2/ts_3/0
+  # exp_log_path: ./logs/legacy/bg_b_pr3_2/ts_3l/0 
+  # exp_log_path: ./logs/legacy/bg_b_pr3_2/ts_4/0 
+  
+  # observaion abaltaion
+  # exp_log_path: ./logs/fgb_vary_obs/5 #4
+  # oracle ablation
+  # exp_log_path: ./logs/fgb_vary_oracle/8
+  # horizon length ablation
+  # exp_log_path: ./logs//fgb_vary_horizon/2
+  # rho value threshold ablation
+  # exp_log_path: ./logs/fgb_vary_rho/7
+  
+  # hardware policies
+  # exp_log_path: ./logs/mr_f/3
+  # exp_log_path: ./logs/mr_f2/0
+  # exp_log_path: ./logs/mr_f4/16
+
+  # exp_log_path: ./logs/mr_f5/0
+  # exp_log_path: ./logs/mr_f6/6 #7
+  # exp_log_path: ./logs/mr_f7_nm/9 #7
+  # exp_log_path: ./logs/mr_f9_nm/5
+  # exp_log_path: ./logs/mr_f9_nm2/0 #0
+  # exp_log_path: ./logs/mr_f10_nm/2
+  exp_log_path: ./logs/gfwg1_ni/3
+  # exp_log_path: ./logs/gfwg2/1
+  # exp_log_path: ./logs/gfwg2_li/5
+
+  # flip policies
+  # exp_log_path: ./logs/dive_rp_vary_oracle/1
+  # exp_log_path: ./logs/dive_rp_short/0
+
+  # exp_log_path: ./logs/r4nm/0
+  # exp_log_path: ./logs/r4nm_dive/2
+  # exp_log_path: ./logs/r4nm_parkour/3
+
+####################################################################
+
+# env parameters 
+
+# max_epi_steps:  40
+
+# export_logger:
+#   export_path: ./results/
+#   export_conf: true
+#   qpos: sim_data
+#   qvel: sim_data
+#   qacc: sim_data
+#   qfrc_constraint: sim_data
+#   mode_latent: env
+#   action: env
+#   oracle_ref_qpos: env
+#   oracle_ref_qvel: env
+#   toe_contact_state: env
+#   observation: env
+#   actuator_force: sim_data
+#   avoid_logfolder_names: true
+
+# frame_recorder:
+#   export_frames: false
+#   export_video: true
+#   export_video_fps: 20 #22
+#   export_path: ./results/
+#   avoid_logfolder_names: true
+
+
+env_entry: dtsd.envs.sim.biped_parkour.biped_env
+# env_entry: dtsd.envs.sim.dive.env
+# env_entry: dtsd.envs.sim.parkour.env
+
+# mode_encoder:
+#   model_path: "logs/encoders/flips_sρ_ae32/dim_2/model_0.pt"
+#   input_type: base_only
+#   offset_x0:
+#   - x
+
+# oracle:
+#   prediction_horizon: 30
+#   entry: preview_cmmp.li_orac.oracle_var
+#   state_feedback:
+#   - x
+#   - y
+#   - z
+#   - x_dot
+#   - z_dot
+#   - y_dot
+#   scan_xlen_infront: 1.0
+
+# oracle:
+#   prediction_horizon: 30
+#   entry: preview_cmmp.prev_orac.oracle_var
+#   state_feedback:
+#   - x
+#   - y
+#   - z
+#   - x_dot
+#   - z_dot
+#   - y_dot
+#   scan_xlen_infront: 1.0
+
+# oracle:
+#   prediction_horizon: 30
+#   entry: preview_cmmp.preview_v3.prev_rtm
+#   state_feedback:
+#   - x
+#   - y
+#   - z
+#   - x_dot
+#   - z_dot
+#   - y_dot
+#   scan_xlen_infront: 1.0
+
+# prev_rtm:
+#   prediction_horizon: 39
+#   entry: preview_cmmp.preview_v3.prev_rtm
+#   state_feedback:
+#   - x
+#   - y
+#   - z
+#   - x_dot
+#   - z_dot
+#   - y_dot
+#   scan_xlen_infront: 1.0
+
+# prev_rtm:
+#   prediction_horizon: 7
+#   entry: preview_cmmp.preview_v3.prev_rtm
+#   state_feedback:
+#   - x
+#   - y
+#   - z
+#   - x_dot
+#   - z_dot
+#   - y_dot
+#   scan_xlen_infront: 0.25
+
+# prev_rtm:
+#   prediction_horizon: 30
+#   entry: preview_cmmp.preview_v3.prev_rtm
+#   # #   # state_feedback: []
+#   scan_xlen_infront: 1.0
+#   state_feedback: [
+#                     # 'roll', 'pitch', 'yaw', 
+#                     'x', 
+#                     # 'y', 
+#                     'z',
+#                     # 'roll_dot', 'pitch_dot', 'yaw_dot',
+#                     # 'x_dot', 
+#                     #'y_dot', 
+#                     # 'z_dot',
+#   state_feedback: [
+#                     # 'roll', 'pitch', 'yaw', 
+#                     'x', 
+#                     # 'y', 
+#                     'z',
+#                     # 'roll_dot', 'pitch_dot', 'yaw_dot',
+#                     # 'x_dot', 
+#                     #'y_dot', 
+#                     # 'z_dot',
+                    
+                  # ]
+#   scan_xlen_infront: 1.0
+
+# prev_rtm_entry: preview_cmmp.preview_v1.prev_rtm
+
+
+
+####################################################################
+# specific params required while testing
+return_rew_dict: true
+visualize_oracle: true
+# visualize_reference: true
+# fixed_nominal_jpos: true
+# robot: hector_biped_v1
+# visualize_preview: false
+# delta_action_max: 0.0
+
+# max_delta_action_per_sec: 16
+# init_ctrl_ramp_in_sec: 0.5
+# moving_average_action_filter:
+#   window_size: 16
+
+# test_state_predictor:
+#   model_path: "logs/state_predictors/oa2x_pure_intg/final_model.pt"
+
+# deativate_launch_terrain_routine: truefor_real
+
+
+
+####################################################################
+# env task setup params
+# flat
+task:
+  name: parkour
+  sample_type: uniform
+  track_x_length: 3.0
+  initial_balance:
+    latent:
+    - 0.0
+    - 0.0
+    duration_lim:
+    - 0 #30
+    - 1 #120
+    qpos_nominal:
+    - 0.0
+    - 0.0
+    - 0.5
+    - 1.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    qvel_nominal:
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+    - 0.0
+  track_elements:
+    flat:
+      manipulate_terrain: false
+      param_names:
+      - goal_x
+      param_dist:
+        type: grid
+        sampling: uniform
+        support:
+        - - 0.3
+        - - 0.3
+# fgb
+# task:
+#   name: parkour
+#   sample_type: uniform
+#   # track_x_start: -9.0
+#   track_x_length: 9.0 #10.0
+#   track_elements:
+#     gap:
+#       manipulate_terrain: true
+#       param_names:
+#       - start
+#       - length
+#       - height
+#       param_dist:
+#         type: grid
+#         sampling: uniform
+#         support:
+#         - - 0.3
+#           - 0.2
+#           - -0.5
+#         - - 0.6
+#           - 0.35
+#           - -0.5
+#     block:
+#       manipulate_terrain: true
+#       param_names:
+#       - start
+#       - length
+#       - height
+#       param_dist:
+#         type: grid
+#         sampling: uniform
+#         support:
+#         - - 0.45
+#           - 0.3
+#           - 0.1 #0.2
+#         - - 0.45
+#           - 0.3 #0.5
+#           - 0.35
+# flips
+# task:
+#   name: parkour
+#   sample_type: uniform
+#   track_x_length: 0.1
+#   track_elements:
+#     pitch_flip:
+#       manipulate_terrain: true
+#       param_names:
+#       - height
+#       - delta_theta
+#       param_dist:
+#         type: grid
+#         sampling: uniform
+#         support:
+#         - - 2.0
+#           - 6.28
+#         - - 2.0
+#           - 6.28
+    # roll_flip:
+    #   manipulate_terrain: true
+    #   param_names:
+    #   - height
+    #   - delta_theta
+    #   param_dist:
+    #     type: grid
+    #     sampling: uniform
+    #     support:
+    #     - - 0.5 #2.0
+    #       - 6.28
+    #     - - 0.5 #1.75
+    #       - 6.28
+
+
+# ####################################################################
+# domain randomisation params
+
+domain_randomisation: null
+# domain_randomisation:
+#   body_mass:
+#     scheme: uniform_random
+#     range:
+#     - 0.75
+#     - 1.25
+#   foot_terrain_friction:
+#     scheme: uniform_random
+#     range:
+#     - 0.3
+#     - 1.0
+
+
+
+####################################################################
+# MDP params
+
+
+# for dphase
+# initialisations:
+  # set_robot_nominal: null
+  # set_robot_h_on_terrain: [0.5,0.5]
+#   start_phase_percentage: 0.0
+#   set_robot_on_traj: null
+  # set_robot_base_pos_z: [0.5,0.6]
+  # set_robot_base_tvel_x: [-0.25,0.25]
+  # set_robot_base_tvel_y: [-0.25,0.25]
+  # set_robot_base_pitch: [10]
+
+  # set_robot_base_pos_z: [0.8]
+  # set_robot_base_pos_x: [-9.0]
+
+#   set_robot_base_tvel_x: [-1.0]
+  # set_robot_base_tvel_y: [-0.5,0.5]
+  # set_robot_flat_on_terrain:
+  #   type: rand_ori_drop
+  #   base_pitch_vals: [90,-90]
+  #   base_roll_vals: [90,-90]
+    
+  # set_robot_base_pitch:
+  # - -20
+  # - 20
+  # set_robot_base_roll:
+  # - -15
+  # - 15
+  # set_robot_base_tvel_x: [-1.0,1.0]
+  # set_robot_base_tvel_y: [-1.0,1.0]
+#   set_robot_base_posmj_prxy_wrkng_sr60_z:
+#   - 0.55
+#   set_skateboard_pos_y:
+#   - 0.1
+
+terminations:
+  # base_state_ref_error_thresh: 0.5
+  epi_steps_max_thresh: 500 #0 #220 # 400
+  # total_reward_min_thresh: 0.0
+  com_height_min_thresh: 0.3 # 0.3 #3
+  # com_height_min_abs_thresh: 0.0 #0.3 #0.3 #3
+  # base_sum_ref_error_thresh: 0.32
+
+  # motor_efficiency:
+  #   efficiency_poly: [-0.006, 0.0809, -0.436,  1.2, -1.7924,  1.284, 0.455]
+  #   p_rated: 400
+  #   gear_ratio: 9.81
+  # base_ori_yaw_ref_error_thresh: 0.3
+  # base_pos_x_ref_error_thresh: 0.1
+  # for_real
+  # joint_limit_real: 0.0
+#   base_ori_ref_error_thresh: 0.4
+
+# observations:
+#   robot_state: null
+#   # robot_error_rpy_state: null
+#   clock_osu: null
+#   mode_latent: null
+#   terrain_xlen_infront: 1.0
+
+
+# action_filter:
+# action_ramp: true
+# action_clip: true
+# action_clip_scale: true
+# actions:
+#   pd_targets:
+#   - 6
+#   - 16
+
+# for_real
+# actions:
+#   pd_motor_targets:
+#   - 0
+#   - 10
+
+# rewards:
+#   gait_period: 0.4
+#   phase_off_right_leg: 0.2
+#   stance_percentage: 0.6
+#   contact_frc_exp_weight: 0.02
+#   contact_vel_exp_weight: 2
+#   not_allowed_bodies_terrain_contact_penalty: -0.3
+#   allowed_bodies_terrain_contact:
+#   - l_toe
+#   - r_toe
+#   base_ori_error_exp_weight: 5
+#   base_pos_error_exp_weight: 5
+#   action_smoothness_exp_weight: 0.1
+#   ctrl_mag_exp_weight: 0.05
+#   scales:
+#     base_ori_ref_error: 0.4
+#     base_pos_ref_error: 0.4
+    # incentivize_gait_v1: 0.05
+    # action_smoothness: 0.1
+    # ctrl_mag: 0.1
+    # penalize_not_allowed_bodies_terrain_contact: 1.0
+
+# rewards:
+  
+#   not_allowed_bodies_terrain_contact_penalty: -0.3
+#   allowed_bodies_terrain_contact: [L_toe, R_toe]
+#   base_tvel_x_const_target: 1.0
+#   ctrl_mag_exp_weight: 0.01
+#   base_tvel_x_const_exp_weight: 10
+
+#   scales:
+#     {
+#       base_tvel_x_const: 0.95,
+#       ctrl_mag: 0.05,
+#       penalize_not_allowed_bodies_terrain_contact: 1.0,
+#     }
+# rewards:
+
+#   not_allowed_bodies_terrain_contact_penalty: -0.3
+#   allowed_bodies_terrain_contact:
+#   - L_toe
+#   - R_toe
+#   base_ori_error_exp_weight: 5
+#   base_pos_error_exp_weight: 5
+#   ctrl_mag_exp_weight: 0.01
+
+#   scales:
+
+#     base_ori_ref_error: 0.475
+#     base_pos_ref_error: 0.475
+#     ctrl_mag: 0.05
+#     penalize_not_allowed_bodies_terrain_contact: 1.0
+# rewards:
+#   not_allowed_bodies_terrain_contact_penalty: -0.3
+#   allowed_bodies_terrain_contact:
+#   - L_toe
+#   - R_toe
+#   poor_contact_bodies:
+#   - L_toe
+#   - R_toe
+#   poor_contact_thresh: 10
+#   poor_contact_penalty: -0.3
+
+#   base_ori_error_exp_weight: 5
+#   base_pos_error_exp_weight: 5
+
+#   base_ori_error_exp_weight: 5
+#   base_tvel_error_exp_weight: 5
+#   base_avel_error_exp_weight: 5
+#   ctrl_mag_exp_weight: 0.01
+#   ctrl_mag_weighted_exp_weight: 0.01
+#   ctrl_mag_weighted_r: [1,1,1,1,100,1,1,1,1,100]
+#   scales:
+#     base_avel_ref_error: 0.475
+#     base_tvel_ref_error: 0.475
+#     ctrl_mag: 0.05
+#     ctrl_mag_weighted: 0.05
+#     penalize_not_allowed_bodies_terrain_contact: 1.0
+#     penalize_poor_contact: 1.0
+
+####################################################################
+# simulation params
+
+# ctrl_dt = simrate * sim_dt
+# ctrl_hz = 1 / ctrl_dt
+# simrate: 30
+
+
+
+sim_params:
+#   base: mujoco
+  # model_path: dtsd/envs/rsc/models/mini_biped/xmls/biped_simple.xml
+  # model_path: dtsd/envs/rsc/models/mini_biped/xmls/biped_mvsc.xml
+  model_path: dtsd/envs/rsc/models/hector_biped_v1/xmls/svsc2.xml
+  render: false
+

@@ -1,0 +1,152 @@
+prev_rtm:
+  entry: preview_cmmp.preview_v3.prev_rtm
+  scan_xlen_infront: 1.0
+  state_feedback:
+  - x
+  - z
+  terrain_map_resolution:
+  - 0.04
+  - 0.04
+exp_name: "fgb_fx0_s\u03C1_ae32/prtm3_vx1"
+input_type: base_only
+n_epochs: 2000
+tasks_for_trng:
+  flat:
+    vary_x0:
+      dofs:
+      - x
+      - z
+      - x_dot
+      - z_dot
+      n_samples:
+      - 1
+      - 1
+      - 3
+      - 3
+      val_lims:
+      - - 0.0
+        - 0.0
+      - - 0.5
+        - 0.5
+      - - -0.5
+        - 0.5
+      - - -0.5
+        - 0.5
+    param_names:
+    - goal_x
+    param_0:
+      start: 0.25
+      stop: 1.5
+      num: 9
+  gap:
+    vary_x0:
+      dofs:
+      - x
+      - z
+      - x_dot
+      - z_dot
+      n_samples:
+      - 1
+      - 1
+      - 3
+      - 3
+      val_lims:
+      - - 0.0
+        - 0.0
+      - - 0.5
+        - 0.5
+      - - -0.5
+        - 0.5
+      - - -0.5
+        - 0.5
+    param_names:
+    - start
+    - length
+    - height
+    param_0:
+      start: 0.2
+      stop: 0.6
+      num: 3
+    param_1:
+      start: 0.1
+      stop: 0.4
+      num: 3
+    param_2:
+      start: -0.5
+      stop: -0.5
+      num: 1
+  block:
+    vary_x0:
+      dofs:
+      - x
+      - z
+      - x_dot
+      - z_dot
+      n_samples:
+      - 1
+      - 1
+      - 3
+      - 3
+      val_lims:
+      - - 0.0
+        - 0.0
+      - - 0.5
+        - 0.5
+      - - -0.5
+        - 0.5
+      - - -0.5
+        - 0.5
+    param_names:
+    - start
+    - length
+    - height
+    param_0:
+      start: 0.45
+      stop: 0.45
+      num: 1
+    param_1:
+      start: 0.3
+      stop: 0.5
+      num: 3
+    param_2:
+      start: 0.2
+      stop: 0.4
+      num: 3
+tasks_for_test: {}
+enc_arch: !!python/name:dtsd.src.me_models.lstm_ae.LSTM_AE ''
+enc_conf:
+  h_dims:
+  - 32
+  h_activ: !!python/object:torch.nn.modules.activation.ReLU
+    training: true
+    _parameters: !!python/object/apply:collections.OrderedDict
+    - []
+    _buffers: !!python/object/apply:collections.OrderedDict
+    - []
+    _non_persistent_buffers_set: !!set {}
+    _backward_pre_hooks: !!python/object/apply:collections.OrderedDict
+    - []
+    _backward_hooks: !!python/object/apply:collections.OrderedDict
+    - []
+    _is_full_backward_hook: null
+    _forward_hooks: !!python/object/apply:collections.OrderedDict
+    - []
+    _forward_hooks_with_kwargs: !!python/object/apply:collections.OrderedDict
+    - []
+    _forward_pre_hooks: !!python/object/apply:collections.OrderedDict
+    - []
+    _forward_pre_hooks_with_kwargs: !!python/object/apply:collections.OrderedDict
+    - []
+    _state_dict_hooks: !!python/object/apply:collections.OrderedDict
+    - []
+    _state_dict_pre_hooks: !!python/object/apply:collections.OrderedDict
+    - []
+    _load_state_dict_pre_hooks: !!python/object/apply:collections.OrderedDict
+    - []
+    _load_state_dict_post_hooks: !!python/object/apply:collections.OrderedDict
+    - []
+    _modules: !!python/object/apply:collections.OrderedDict
+    - []
+    inplace: false
+  out_activ: null
+latent_dim: 2

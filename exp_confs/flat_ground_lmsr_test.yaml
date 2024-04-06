@@ -1,0 +1,54 @@
+# config for the test
+exp_log_path: ./logs/fgb_vary_obs/0
+nop: 3
+test_name_suffix: '30_2'
+n_rollout_logpath: "./results/fgb_vary_obs/0/n_rollouts_test/100_rollouts_svsc2/"
+latent_density_per_dim: 30
+search_space_scale: 2.0
+render: false
+# custom environemnt config for overwriting the default config
+env_entry: dtsd.envs.sim.parkour.env
+observations:
+  robot_state: null
+  clock_osu: null
+  custom_latent: null
+terminations:
+  epi_steps_max_thresh: 30
+  total_reward_min_thresh: -10000 # deactivate this termination
+  base_pos_x_ref_error_thresh: 10000 # deactivate this termination
+oracle:
+  prediction_horizon: 30
+  entry: preview_cmmp.prev_orac.oracle_var
+  state_feedback:
+  - x
+  - y
+  - z
+  - x_dot
+  - z_dot
+  - y_dot
+  scan_xlen_infront: 1.0
+task:
+  name: parkour
+  sample_type: uniform
+  track_x_start:  0.0
+  track_x_length: 9.0
+  modes:
+    flat:
+      manipulate_terrain: false
+      param_names:
+      - goal_x
+      param_dist:
+        type: continuous
+        sampling: uniform
+        support:
+        - - 1.0
+        - - 1.0
+
+mode_encoder:
+  model_path: "logs/encoders/fgb_fx0_s\u03C1_ae32/prtm3_vx1/dim_2/model_0.pt"
+  input_type: base_only
+  offset_x0:
+  - x
+# sim_params:
+#   model_path: dtsd/envs/rsc/models/mini_biped/xmls/biped_mvsc.xml
+#   render: false
