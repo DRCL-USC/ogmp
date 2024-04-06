@@ -10,6 +10,11 @@ Codebase accompanying the paper [OGMP: Oracle Guided Multimodal Policies for Agi
 
 ## Installation
 
+Make a virtual environment,
+
+    python3 -m venv ogmp_env
+    source ogmp_env/bin/activate
+
 Clone the repo,
 
     git clone --depth 1 https://github.com/DRCL-USC/ogmp
