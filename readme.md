@@ -10,6 +10,10 @@ Codebase accompanying the paper [OGMP: Oracle Guided Multimodal Policies for Agi
 
 ## Installation
 
+Clone the repo,
+
+    git clone --depth 1 https://github.com/DRCL-USC/ogmp
+
 To install the dependencies, run:
     
     pip3 install -r requirements.txt
@@ -21,10 +25,6 @@ Install old version of torch (new may work but not tested)
 tested in python 3.8.10
 
 ## Usage
-
-Clone the repo,
-
-    git clone --depth 1 https://github.com/DRCL-USC/ogmp
 
 To train the policy for task (say parkour), run
 
