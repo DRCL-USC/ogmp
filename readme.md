@@ -22,6 +22,10 @@ tested in python 3.8.10
 
 ## Usage
 
+Clone the repo,
+
+    git clone --depth 1 https://github.com/DRCL-USC/ogmp
+
 To train the policy for task (say parkour), run
 
     python train.py --exp_file exp_confs/parkour.yaml
