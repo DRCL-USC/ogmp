@@ -4,8 +4,8 @@ Codebase accompanying the paper [OGMP: Oracle Guided Multimodal Policies for Agi
 
 
 <p align="center">
-   <img width="300" height="169" src="media/parkour.gif">
-   <img width="300" height="169" src="media/dive_all4.gif">
+   <img width="400" height="226" src="media/parkour.gif">
+   <img width="400" height="226" src="media/dive_all4.gif">
 </p>
 
 ## Installation
