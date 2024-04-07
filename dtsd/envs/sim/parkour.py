@@ -76,11 +76,11 @@ class env(ogpo_biped_base):
             # base_min_height_thresh (only used in n_rollout test)
             if 'base_height_min_thresh' in self.exp_conf['terminations'].keys():
                 terrain_height = self.sim.get_terrain_height_at(base_pos)
-                height = base_pos[-1] - terrain_height
-                if height < self.exp_conf['terminations']['base_height_min_thresh']: 
+                rel_height = base_pos[-1] - terrain_height # relative height (to detect falling on a block)
+                abs_height = base_pos[-1] # absolute height (to avoid standing inside a gap)
+                if rel_height < self.exp_conf['terminations']['base_height_min_thresh'] or abs_height < self.exp_conf['terminations']['base_height_min_thresh']:
                     if verbose: print('done','base_height_min_thresh')
                     return True, 'base_height_min_thresh'
-
 
         return False, None
 
