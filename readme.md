@@ -38,6 +38,20 @@ Similarly to train the best policy from the paper, run
 
     python3 train.py --exp_conf_path ./exp_confs/parkour.yaml --recurrent --logdir ./logs/
 
+To run the analyses from the paper, run
+
+    python3 analysis/n_rollout_test.py # for agility metrics and in-domain paramters
+
+    python3 analysis/flat_ground_lmsr_test.py # for LMSR on flat ground
+
+    python3 analysis/transition_lmsr_test.py # for LMSR at transition
+
+the correspongin analyses config files are in `./exp_confs/` folder. All the analyses files deploy multiprocessing, however each worker will have a copy of a lstm policy it is intensive hence set `nop` as per your system's capability (default is 4 tested in a 32 Core, 64 GB RAM machine).
+
+logs will be saved in `./results/<experiment_name>/<variant_id>`.
+
+
+
 ## High-level overview
 
 * algos: contains the custom ppo implementation from [link](https://github.com/osudrl/RSS-2020-learning-memory-based-control)
