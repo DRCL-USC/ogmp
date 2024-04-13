@@ -2,7 +2,6 @@ sim_params:
   model_path: dtsd/envs/rsc/models/mini_biped/xmls/biped_simple.xml
   render: false
   init_viewer_every_reset: false
-  record: false
 visualize_reference: false
 p_gain: 30
 d_gain: 0.5
@@ -10,12 +9,12 @@ simrate: 60
 robot: drcl_biped
 observations:
   robot_state: null
-  terrain_xlen_infront: 0.5
+  clock_osu: null
+  custom_latent: null
 terminations:
-  epi_steps_max_thresh: 400
+  epi_steps_max_thresh: 30
   total_reward_min_thresh: -10000
   base_pos_x_ref_error_thresh: 10000
-  base_height_min_thresh: 0.3
 rewards:
   not_allowed_bodies_terrain_contact_penalty: -0.3
   allowed_bodies_terrain_contact:
@@ -54,57 +53,29 @@ task:
   track_x_start: 0.0
   track_x_length: 9.0
   modes:
-    gap:
-      manipulate_terrain: true
+    flat:
+      manipulate_terrain: false
       param_names:
-      - start
-      - length
-      - height
+      - goal_x
       param_dist:
         type: continuous
         sampling: uniform
         support:
-        - - 0.3
-          - 0.2
-          - -0.5
-        - - 0.6
-          - 0.35
-          - -0.5
-    block:
-      manipulate_terrain: true
-      param_names:
-      - start
-      - length
-      - height
-      param_dist:
-        type: continuous
-        sampling: uniform
-        support:
-        - - 0.45
-          - 0.3
-          - 0.2
-        - - 0.45
-          - 0.5
-          - 0.35
+        - - 1.0
+        - - 1.0
 mode_encoder:
   model_path: "logs/encoders/fgb_fx0_s\u03C1_ae32/prtm3_vx1/dim_2/model_0.pt"
   input_type: base_only
   offset_x0:
   - x
-logdir: /home1/lkrajan/drcl_projects/cpptf_v2/logs/bg_b_pr3_2_obs4/3/
-paths2policies:
-- ./logs/fgb_vary_obs/0/
-- ./logs/fgb_vary_obs/1/
-- ./logs/fgb_vary_obs/2/
-- ./logs/fgb_vary_obs/3/
-- ./logs/fgb_vary_obs/4/
-- ./logs/fgb_vary_obs/5/
-n_rollouts: 100
+logdir: /home1/lkrajan/drcl_projects/cpptf_v2/logs/bg_b_pr3_2_obs4/0/
+exp_log_path: ./logs/fgb_vary_obs/0
 nop: 3
-plot_sre_vs_n_rollouts: true
-test_name_suffix: svsc2
+test_name_suffix: '30_2'
+n_rollout_logpath: ./results/fgb_vary_obs/0/n_rollouts_test/100_rollouts_svsc2/
+latent_density_per_dim: 30
+search_space_scale: 2.0
 render: false
-record: false
 oracle:
   prediction_horizon: 30
   entry: oracles.prev_orac.oracle_var
@@ -116,3 +87,10 @@ oracle:
   - z_dot
   - y_dot
   scan_xlen_infront: 1.0
+export_logger:
+  export_path: ./results/fgb_vary_obs/0/flat_ground_lmsr_test_30_2/logs/
+  qpos: sim_data
+  qvel: sim_data
+  mode_latent: env
+  avoid_logfolder_names: true
+  export_conf: false

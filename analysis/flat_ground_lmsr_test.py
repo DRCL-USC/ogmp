@@ -8,9 +8,25 @@ import time
 from tqdm.auto import tqdm, trange
 import multiprocessing
 from dtsd.envs.src.misc_funcs import *
-from src.misc_funcs import load_lme_from_all_logs
-from util import env_factory
+from src.misc_funcs import load_lme_from_all_logs, downsample, generate_random_colors
+from src.util import env_factory
 import argparse
+
+ENV_DT 	= 0.03
+DATA_DT = 0.0005
+
+QPOS2USE = [
+                0,1,2,          # base_pos
+                # 3,4,5,6,        # base_quat
+                # 7,8,9,10,11,    # jpos_left
+                # 12,13,14,15,16, # jpos_right
+            ]
+QVEL2USE =  [
+                0,1,2,          # base_tvel
+                # 3,4,5,          # base_avel
+                # 6,7,8,9,10,     # jvel_left
+                # 11,12,13,14,15, # jvel_right
+            ]
 
 class camera_trolly:
 	def __init__(self):
@@ -243,7 +259,9 @@ if __name__ == '__main__':
 	plt.tight_layout()
 	
 	plt.savefig(os.path.join(alp_till_logs,'search_space.png'))
+	print('close figure to continue')
 	plt.show()
+	plt.close()
 
 
 
@@ -310,7 +328,7 @@ if __name__ == '__main__':
 	processes = []
 	trial_index = 0
 	tqdm.set_lock(multiprocessing.RLock())
-
+	
 	for worker in range(nop):
 		if reminder -worker > 0:
 				n_trials_for_this_process = quotient + 1 
@@ -339,3 +357,126 @@ if __name__ == '__main__':
 	
 	for t in processes:
 		t.join()
+
+	
+	# collect all results
+	logs =[obj for obj in  os.listdir(anlys_log_path) if os.path.isdir(os.path.join(anlys_log_path,obj))]
+	logs = sorted(logs,key=lambda x: int(x.split('.')[0]))
+	fig, axs = plt.subplots(1,4,figsize=(20,4))
+
+	robot_trajs = []
+	for i in tqdm(range(len(logs)),desc='collecting logs'):
+		path2log = os.path.join(anlys_log_path,logs[i],'log.npz')
+		log = np.load(path2log)
+		robot_qpos = log['qpos'][:,QPOS2USE]
+		robot_qvel = log['qvel'][:,QVEL2USE]
+		robot_state = np.hstack((robot_qpos,robot_qvel))
+		robot_state = downsample(robot_state,ds_rate=int(ENV_DT/DATA_DT))
+		robot_trajs.append(robot_state)
+
+		path2mlog = os.path.join(anlys_log_path,logs[i],'metrics_log.npz')
+		mlog = np.load(path2mlog)
+
+	robot_trajs = np.array(robot_trajs)
+	# print('robot_trajs.shape:',robot_trajs.shape)
+	# print('ss_points.shape:',ss_points.shape)
+
+
+	# compute the Z(x), plot 0 and 2
+	in_z_space = []
+	robot_trajs_in_z_space = []
+	lm_in_z_space = []
+	for i,point in enumerate(ss_points):
+		if robot_trajs[i,-1,2] <= 0.4:
+			in_z_space.append(0)
+			axs[0].scatter(point[0],point[1],s=10,marker='o',color='gray')
+			axs[2].scatter(point[0],point[1],s=10,marker='o',color='gray')
+		else:
+			in_z_space.append(1)
+			robot_trajs_in_z_space.append(robot_trajs[i])
+			lm_in_z_space.append(point)
+			axs[0].scatter(point[0],point[1],s=10,marker='o',color='red')
+
+
+	robot_trajs_in_z_space = np.array(robot_trajs_in_z_space)
+	lm_in_z_space = np.array(lm_in_z_space)
+
+	# print('robot_trajs_in_z_space.shape:',robot_trajs_in_z_space.shape)
+	# print('lm_in_z_space.shape:',lm_in_z_space.shape)
+
+	# make a trjectory(2d) in to a vector(1d)
+	data2cluster = robot_trajs_in_z_space.reshape(robot_trajs_in_z_space.shape[0],-1)
+	from sklearn.cluster import KMeans
+	from sklearn.metrics import silhouette_score
+	
+	n_cluster_range = np.arange(2,min(15,len(data2cluster)))
+	elbow_scores = []
+	silhoutte_scores = []
+
+	for n_clusters in tqdm(n_cluster_range,desc='clustering'):
+		kmeans = KMeans(n_clusters=n_clusters, random_state=42,n_init="auto").fit(data2cluster)
+		elbow_scores.append(kmeans.inertia_)
+		silhoutte_scores.append(silhouette_score(data2cluster, kmeans.labels_))
+		# print('n_clusters:',n_clusters,'silhouette_score:',silhouette_score(data2cluster, kmeans.labels_))	
+	
+	optimal_n_clusters = n_cluster_range[np.argmax(silhoutte_scores)]
+	print('optimal_n_clusters:',optimal_n_clusters)
+	# plot 1: elbow and silhouette scores
+	axs[1].plot(n_cluster_range,elbow_scores,label='elbow score')
+	axs[1].set_xlabel('n_clusters')
+	axs[1].set_ylabel('elbow')
+	axs1_twin = axs[1].twinx()
+	axs1_twin.plot(n_cluster_range,silhoutte_scores,label='silhouette score',color='orange')
+	axs1_twin.set_ylabel('silhouette')
+	# draw a vline at optimal_n_clusters
+	axs[1].axvline(x=optimal_n_clusters, color='red', linestyle='--')
+
+
+
+	kmeans = KMeans(n_clusters=optimal_n_clusters, random_state=42,n_init="auto").fit(data2cluster)
+	mode_clusters = [[] for _ in range(optimal_n_clusters)]
+
+	for i,label in enumerate(kmeans.labels_): 
+		mode_clusters[label].append(i)
+	
+	# sort the clusters by length
+	mode_clusters.sort(key=len)
+
+	
+	# generate unique colors for each cluster
+	colors = generate_random_colors(optimal_n_clusters)
+
+
+	for mc,col in zip(mode_clusters,colors):
+		# points in the cluster
+		points = lm_in_z_space[mc]
+
+		axs[2].scatter(points[:,0],points[:,1],s=10,marker='o',color=col)
+
+		robot_trajs_in_cluster = robot_trajs_in_z_space[mc]
+
+		# plot the cluster trajs
+		for rt in robot_trajs_in_cluster:
+			axs[3].plot(rt[:,2],color=col, alpha=0.5)
+	
+	axs[3].set_xlabel('timesteps')
+	axs[3].set_ylabel('base_height')
+	titles = ['Z(x)' , 'elbow and eilhouette scores', 'clustered Z(x)', 'clustered base_height traj.']
+	latent_plots = [0,2]
+	
+	for ax,title in zip(axs,titles):
+		ax.set_title(title)
+		if 'Z(x)' in title:
+			ax.set_xlabel('latent 0')
+			ax.set_ylabel('latent 1')
+		else:
+			ax.grid()
+	
+	fig.suptitle('flat_ground_lmsr_test')
+	fig.tight_layout()
+	fig.savefig(os.path.join(alp_till_logs,'flat_ground_lmsr_test.png'))
+	print('close figure to exit')
+	plt.show()
+
+ 
+		

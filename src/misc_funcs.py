@@ -9,6 +9,7 @@ from matplotlib.animation import FuncAnimation
 from .ae_trainer import get_device
 import importlib
 from itertools import product
+import random
 
 
 custom_tight_layout = lambda  :     plt.subplots_adjust(
@@ -44,6 +45,18 @@ custom_tight_layout = lambda  :     plt.subplots_adjust(
 						hspace=0.1,
 						wspace=0.155,
 						)
+def downsample(data, ds_rate=10):
+    return data[::ds_rate,:]
+
+def generate_random_colors(n):
+    # Generate 'n' random colors
+    random_colors = []
+    for _ in range(n):
+        red = random.uniform(0.1, 1.0)
+        green = random.uniform(0.1, 1.0)
+        blue = random.uniform(0.1, 1.0)
+        random_colors.append((red, green, blue))
+    return random_colors
 
 def load_key_from_all_logs(path2logs,key):
 	loglist = os.listdir(path2logs)
