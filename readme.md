@@ -1,7 +1,6 @@
 # OGMP: Oracle Guided Multimodal Policies for Agile and Versatile Robot Control
 
-Codebase accompanying the paper [OGMP: Oracle Guided Multimodal Policies for Agile and Versatile Robot Control](https://arxiv.org/abs/2403.04205)
-
+Codebase accompanying the paper [OGMP: Oracle Guided Multimodal Policies for Agile and Versatile Robot Control](https://arxiv.org/abs/2403.04205). For support please raise an issue here or contact the authors.
 
 <p align="center">
    <img width="400" height="226" src="media/parkour.gif">
@@ -50,13 +49,12 @@ Similarly to train the best policy from the paper, run
 * train.py: file to train policies.
 * test.py: file to test policies.
 
-## Results recreation
+## Recreating results from the paper
 
-<img src="media/results_recreated.jpg" align="right" width="250"/>
-Since the paper, the codebase has been cleaned and made modular for easy usage. This results in minor change in the training convergence (as show in the figure right ), but qualitatively the results remain indistinguishable. 
+<img src="media/results_recreated.jpg" align="right" width="300"/>
+Since the paper, the codebase has been cleaned and made modular for easy usage. This results in minor change in the training convergence (as show in the figure right ), but qualitatively the policy's performance remain indistinguishable. 
 
 <br clear="left"/>
-
 
 ## Citation
 

@@ -4,7 +4,6 @@ exp_log_path: ./logs/dive_rp_vary_oracle/1
 sim_params:
   model_path: dtsd/envs/rsc/models/mini_biped/xmls/biped_mvsc.xml
   # model_path: dtsd/envs/rsc/models/mini_biped/xmls/biped_simple.xml
-
   render: false
 env_entry: dtsd.envs.sim.dive.env
 terminations:
