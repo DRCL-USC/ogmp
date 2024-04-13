@@ -52,7 +52,7 @@ Similarly to train the best policy from the paper, run
 ## Recreating results from the paper
 
 <img src="media/results_recreated.jpg" align="right" width="300"/>
-Since the paper, the codebase has been cleaned and made modular for easy usage. This results in minor change in the training convergence (as show in the figure right ), but qualitatively the policy's performance remain indistinguishable. 
+Since the paper, the codebase has been cleaned and made modular for easy usage. This results in minor change in the training convergence (as in the figure), but qualitatively the policy's performance remain indistinguishable. 
 
 <br clear="left"/>
 
