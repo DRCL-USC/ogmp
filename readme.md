@@ -48,7 +48,7 @@ Similarly to train the best policy from the paper, run
 
 To run the analyses from the paper, run
 
-    # for agility metrics and in-domain paramters
+    # for the sample mean of agility metrics and in-domain paramters
     python3 analysis/n_rollout_test.py 
 
     # for LMSR on flat ground
