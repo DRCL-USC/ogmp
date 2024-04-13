@@ -30,25 +30,34 @@ tested in python 3.8.10
 
 ## Usage
 
-To test the policy in paper,for task (say parkour), run
+To test the policy in paper, for each task, run
     
+    # for best parkour policy
     python3 test.py --tstng_conf_path ./exp_confs/parkour_test.yaml --render_onscreen
+
+    # for best dive policy
+    python3 test.py --tstng_conf_path ./exp_confs/dive_test.yaml --render_onscreen
 
 Similarly to train the best policy from the paper, run 
 
+    # for parkour
     python3 train.py --exp_conf_path ./exp_confs/parkour.yaml --recurrent --logdir ./logs/
+
+    # for dive
+    python3 train.py --exp_conf_path ./exp_confs/dive.yaml --recurrent --logdir ./logs/
 
 To run the analyses from the paper, run
 
-    python3 analysis/n_rollout_test.py # for agility metrics and in-domain paramters
+    # for agility metrics and in-domain paramters
+    python3 analysis/n_rollout_test.py 
 
-    python3 analysis/flat_ground_lmsr_test.py # for LMSR on flat ground
+    # for LMSR on flat ground
+    python3 analysis/flat_ground_lmsr_test.py 
 
-    python3 analysis/transition_lmsr_test.py # for LMSR at transition
+    # for LMSR at transition
+    python3 analysis/transition_lmsr_test.py 
 
-the correspongin analyses config files are in `./exp_confs/` folder. All the analyses files deploy multiprocessing, however each worker will have a copy of a lstm policy it is intensive hence set `nop` as per your system's capability (default is 4 tested in a 32 Core, 64 GB RAM machine).
-
-logs will be saved in `./results/<experiment_name>/<variant_id>`.
+The corresponding config file for each analyisis is in `./exp_confs/` folder. All the analyses files deploy multiprocessing, where each process will have a copy of a lstm policy and hence is intensive. Set `nop` as per your system's capability to minimize time (default is 3 tested in a 32 Core, 64 GB RAM machine). Resulting plots and ogs will be saved in `./results/<experiment_name>/<variant_id>`.
 
 
 
