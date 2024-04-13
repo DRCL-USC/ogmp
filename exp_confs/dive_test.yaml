@@ -10,6 +10,7 @@ terminations:
   epi_steps_max_thresh: 100
   total_reward_min_thresh: -1000 #0.6
   base_pos_z_ref_error_thresh: 1000 #0.4
+  base_height_min_thresh: 0.3
 oracle:
   prediction_horizon: 30
   entry: oracles.prev_orac.oracle_var

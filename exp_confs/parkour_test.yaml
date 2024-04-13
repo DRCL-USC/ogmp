@@ -11,9 +11,10 @@ terminations:
   epi_steps_max_thresh: 400
   total_reward_min_thresh: -1000 # deactivate
   base_pos_x_ref_error_thresh: 10000 # deactivate
+  base_height_min_thresh: 0.3
 oracle:
   prediction_horizon: 30
-  entry: oracles.li_orac.oracle_var
+  entry: oracles.prev_orac.oracle_var
   state_feedback:
   - x
   - y

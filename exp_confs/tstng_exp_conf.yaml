@@ -1,4 +1,5 @@
 sim_params:
+  base: mujoco
   model_path: dtsd/envs/rsc/models/mini_biped/xmls/biped_mvsc.xml
   render: true
 visualize_reference: false
@@ -8,12 +9,14 @@ simrate: 60
 robot: drcl_biped
 observations:
   robot_state: null
-  clock: null
+  clock_osu: null
   mode_latent: null
+  terrain_xlen_infront: 0.5
 terminations:
-  epi_steps_max_thresh: 100
+  epi_steps_max_thresh: 400
   total_reward_min_thresh: -1000
-  base_pos_z_ref_error_thresh: 1000
+  base_pos_x_ref_error_thresh: 10000
+  base_height_min_thresh: 0.3
 rewards:
   not_allowed_bodies_terrain_contact_penalty: -0.3
   allowed_bodies_terrain_contact:
@@ -27,56 +30,80 @@ rewards:
     base_pos_ref_error: 0.475
     ctrl_mag: 0.05
     penalize_not_allowed_bodies_terrain_contact: 1.0
-oracle:
+max_epi_steps: 200
+prev_rtm:
   prediction_horizon: 30
-  entry: oracles.prev_orac.oracle_var
-  state_feedback: []
+  entry: preview_cmmp.preview_v3.prev_rtm
+  state_feedback:
+  - x
+  - y
+  - z
+  - x_dot
+  - z_dot
+  - y_dot
   scan_xlen_infront: 1.0
-env_entry: dtsd.envs.sim.dive.env
+env_entry: dtsd.envs.sim.parkour.env
 initialisations:
-  set_robot_h_on_terrain:
-  - 0.5
-  - 0.5
+  set_robot_nominal: null
 actions:
   pd_targets:
   - 0
   - 10
 task:
-  name: dive
+  name: parkour
   sample_type: uniform
+  track_x_start: 0.0
+  track_x_length: 9.0
   modes:
-    pitch_flip:
+    gap:
       manipulate_terrain: true
       param_names:
+      - start
+      - length
       - height
-      - delta_theta
       param_dist:
-        type: grid
+        type: continuous
         sampling: uniform
         support:
-        - - 1.0
-          - -6.28
-        - - 1.75
-          - 6.28
-    roll_flip:
+        - - 0.3
+          - 0.2
+          - -0.5
+        - - 0.6
+          - 0.35
+          - -0.5
+    block:
       manipulate_terrain: true
       param_names:
+      - start
+      - length
       - height
-      - delta_theta
       param_dist:
-        type: grid
+        type: continuous
         sampling: uniform
         support:
-        - - 1.0
-          - -6.28
-        - - 1.75
-          - 6.28
+        - - 0.45
+          - 0.3
+          - 0.2
+        - - 0.45
+          - 0.5
+          - 0.35
 mode_encoder:
-  model_path: "logs/encoders/flips_s\u03C1_ae32_lp_rpf/dim_2/model_0.pt"
+  model_path: "logs/encoders/fgb_fx0_s\u03C1_ae32/prtm3_vx1/dim_2/model_0.pt"
   input_type: base_only
   offset_x0:
   - x
-logdir: /home1/lkrajan/drcl_projects/cpptf_v2/logs/mr_flip_rp_lp_vary/1/
+logdir: /home1/lkrajan/drcl_projects/cpptf_v2/logs/bg_b_pr3_2_obs4/4/
 n_episodes: 10
-exp_log_path: ./logs/dive_rp_vary_oracle/1
-visualize_oracle: false
+exp_log_path: ./logs/fgb_vary_obs/4
+oracle:
+  prediction_horizon: 30
+  entry: oracles.prev_orac.oracle_var
+  state_feedback:
+  - x
+  - y
+  - z
+  - x_dot
+  - z_dot
+  - y_dot
+  scan_xlen_infront: 1.0
+visualize_oracle: true

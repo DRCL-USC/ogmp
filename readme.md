@@ -57,7 +57,7 @@ To run the analyses from the paper, run
     # for LMSR at transition
     python3 analysis/transition_lmsr_test.py 
 
-The corresponding config file for each analyisis is in `./exp_confs/` folder. All the analyses files deploy multiprocessing, where each process will have a copy of a lstm policy and hence is intensive. Set `nop` as per your system's capability to minimize time (default is 3 tested in a 32 Core, 64 GB RAM machine). Resulting plots and ogs will be saved in `./results/<experiment_name>/<variant_id>`.
+The corresponding config file for each analyisis is in `./exp_confs/` folder. All the analyses files deploy multiprocessing, where each process will have a copy of a lstm policy and hence could be intensive. Set `nop` as per your system's capability to minimize time (default is 3 tested in a 32 Core, 64 GB RAM machine). Resulting plots and ogs will be saved in `./results/<experiment_name>/<variant_id>`.
 
 
 
