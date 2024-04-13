@@ -21,6 +21,22 @@ custom_tight_layout = lambda  :     plt.subplots_adjust(
 						wspace=0.155,
 						)
 
+ENV_DT 	= 0.03
+DATA_DT = 0.0005
+
+QPOS2USE = [
+                0,1,2,          # base_pos
+                # 3,4,5,6,        # base_quat
+                # 7,8,9,10,11,    # jpos_left
+                # 12,13,14,15,16, # jpos_right
+            ]
+QVEL2USE =  [
+                0,1,2,          # base_tvel
+                # 3,4,5,          # base_avel
+                # 6,7,8,9,10,     # jvel_left
+                # 11,12,13,14,15, # jvel_right
+            ]
+
 PREV_RTM_X0_NOMINAL =   [
 						  0.0, 0.0, 0.0,
 						  0.0, 0.0, 0.5,

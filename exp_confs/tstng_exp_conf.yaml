@@ -10,9 +10,9 @@ robot: drcl_biped
 observations:
   robot_state: null
   clock_osu: null
-  custom_latent: null
+  mode_latent: null
 terminations:
-  epi_steps_max_thresh: 30
+  epi_steps_max_thresh: 60
   total_reward_min_thresh: -10000
   base_pos_x_ref_error_thresh: 10000
 rewards:
@@ -50,19 +50,24 @@ actions:
 task:
   name: parkour
   sample_type: uniform
-  track_x_start: 0.0
-  track_x_length: 9.0
+  track_x_length: 0.5
   modes:
-    flat:
-      manipulate_terrain: false
+    gap:
+      manipulate_terrain: true
       param_names:
-      - goal_x
+      - start
+      - length
+      - height
       param_dist:
         type: continuous
         sampling: uniform
         support:
-        - - 1.0
-        - - 1.0
+        - - 0.5
+          - 0.3
+          - -0.5
+        - - 0.5
+          - 0.3
+          - -0.5
 mode_encoder:
   model_path: "logs/encoders/fgb_fx0_s\u03C1_ae32/prtm3_vx1/dim_2/model_0.pt"
   input_type: base_only
@@ -88,7 +93,7 @@ oracle:
   - y_dot
   scan_xlen_infront: 1.0
 export_logger:
-  export_path: ./results/fgb_vary_obs/0/flat_ground_lmsr_test_30_2/logs/
+  export_path: ./results/fgb_vary_obs/0/transition_lmsr_test_30_2/logs/
   qpos: sim_data
   qvel: sim_data
   mode_latent: env

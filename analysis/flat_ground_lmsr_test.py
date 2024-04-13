@@ -8,25 +8,11 @@ import time
 from tqdm.auto import tqdm, trange
 import multiprocessing
 from dtsd.envs.src.misc_funcs import *
-from src.misc_funcs import load_lme_from_all_logs, downsample, generate_random_colors
+from src.misc_funcs import *
 from src.util import env_factory
 import argparse
 
-ENV_DT 	= 0.03
-DATA_DT = 0.0005
 
-QPOS2USE = [
-                0,1,2,          # base_pos
-                # 3,4,5,6,        # base_quat
-                # 7,8,9,10,11,    # jpos_left
-                # 12,13,14,15,16, # jpos_right
-            ]
-QVEL2USE =  [
-                0,1,2,          # base_tvel
-                # 3,4,5,          # base_avel
-                # 6,7,8,9,10,     # jvel_left
-                # 11,12,13,14,15, # jvel_right
-            ]
 
 class camera_trolly:
 	def __init__(self):
@@ -233,8 +219,8 @@ if __name__ == '__main__':
 	import matplotlib.pyplot as plt
 
 
-	plt.scatter(lme[:,0],lme[:,1],s=10,marker='x', label='latent modes encountered (in domain)', color='blue')
-	plt.scatter(lme_center[0],lme_center[1],s=10, label='latent mode center', color='blue')
+	plt.scatter(lme[:,0],lme[:,1],s=20,marker='x', label='latent modes encountered (in domain)', color='blue')
+	plt.scatter(lme_center[0],lme_center[1],s=20, label='latent mode center', color='blue')
 	plt.plot([lme_center[0],lme_center[0]+lme_r_max],[lme_center[1],lme_center[1]],color='blue',linestyle='--', label='in domain radius')
 	ax = plt.gca()
 	circle = plt.Circle(lme_center, lme_r_max, color='blue', fill=False, linestyle='--')
@@ -389,13 +375,13 @@ if __name__ == '__main__':
 	for i,point in enumerate(ss_points):
 		if robot_trajs[i,-1,2] <= 0.4:
 			in_z_space.append(0)
-			axs[0].scatter(point[0],point[1],s=10,marker='o',color='gray')
-			axs[2].scatter(point[0],point[1],s=10,marker='o',color='gray')
+			axs[0].scatter(point[0],point[1],s=20,marker='o',color='gray')
+			axs[2].scatter(point[0],point[1],s=20,marker='o',color='gray')
 		else:
 			in_z_space.append(1)
 			robot_trajs_in_z_space.append(robot_trajs[i])
 			lm_in_z_space.append(point)
-			axs[0].scatter(point[0],point[1],s=10,marker='o',color='red')
+			axs[0].scatter(point[0],point[1],s=20,marker='o',color='red')
 
 
 	robot_trajs_in_z_space = np.array(robot_trajs_in_z_space)
@@ -451,7 +437,7 @@ if __name__ == '__main__':
 		# points in the cluster
 		points = lm_in_z_space[mc]
 
-		axs[2].scatter(points[:,0],points[:,1],s=10,marker='o',color=col)
+		axs[2].scatter(points[:,0],points[:,1],s=20,marker='o',color=col)
 
 		robot_trajs_in_cluster = robot_trajs_in_z_space[mc]
 

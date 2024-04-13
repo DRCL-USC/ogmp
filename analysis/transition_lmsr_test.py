@@ -8,8 +8,8 @@ import time
 from tqdm.auto import tqdm, trange
 import multiprocessing
 from dtsd.envs.src.misc_funcs import *
-from src.misc_funcs import load_lme_from_all_logs
-from util import env_factory
+from src.misc_funcs import *
+from src.util import env_factory
 import argparse
 
 class camera_trolly:
@@ -288,8 +288,8 @@ if __name__ == '__main__':
 	import matplotlib.pyplot as plt
 
 
-	plt.scatter(lme[:,0],lme[:,1],s=10,marker='x', label='latent modes encountered (in domain)', color='blue')
-	plt.scatter(lme_center[0],lme_center[1],s=10, label='latent mode center', color='blue')
+	plt.scatter(lme[:,0],lme[:,1],s=20,marker='x', label='latent modes encountered (in domain)', color='blue')
+	plt.scatter(lme_center[0],lme_center[1],s=20, label='latent mode center', color='blue')
 	plt.plot([lme_center[0],lme_center[0]+lme_r_max],[lme_center[1],lme_center[1]],color='blue',linestyle='--', label='in domain radius')
 	ax = plt.gca()
 	circle = plt.Circle(lme_center, lme_r_max, color='blue', fill=False, linestyle='--')
@@ -314,6 +314,7 @@ if __name__ == '__main__':
 	plt.tight_layout()
 	
 	plt.savefig(os.path.join(alp_till_logs,'search_space.png'))
+	print('close figure to continue')
 	plt.show()
 
 
@@ -332,7 +333,7 @@ if __name__ == '__main__':
 	
 	trial_index = 0
 	tqdm.set_lock(multiprocessing.RLock())
-
+	
 	for worker in range(nop):
 		if reminder -worker > 0:
 				n_trials_for_this_process = quotient + 1 
@@ -362,4 +363,76 @@ if __name__ == '__main__':
 	
 	for t in processes:
 		t.join()
+	
 
+	# collet oracle guided log
+	og_log = np.load(alp_till_logs +'/w_oracle/log.npz') 
+	transition_occurs_at = None
+	og_lmp = og_log['mode_latent'][-1,:]
+	robot_qpos = og_log['qpos'][:,QPOS2USE]
+	robot_qvel = og_log['qvel'][:,QVEL2USE]
+	robot_state = np.hstack((robot_qpos,robot_qvel))
+	og_robot_traj = downsample(robot_state,ds_rate=int(ENV_DT/DATA_DT))
+
+	# collect logs
+	logs =[obj for obj in  os.listdir(anlys_log_path) if os.path.isdir(os.path.join(anlys_log_path,obj))]
+	logs = sorted(logs,key=lambda x: int(x.split('.')[0]))
+	fig, axs = plt.subplots(1,2,figsize=(10,4))
+
+	robot_trajs = []
+	transition_occurs_at = None
+	for i in tqdm(range(len(logs)),desc='collecting logs'):
+		path2log = os.path.join(anlys_log_path,logs[i],'log.npz')
+		log = np.load(path2log)
+		robot_qpos = log['qpos'][:,QPOS2USE]
+		robot_qvel = log['qvel'][:,QVEL2USE]
+		robot_state = np.hstack((robot_qpos,robot_qvel))
+		robot_state = downsample(robot_state,ds_rate=int(ENV_DT/DATA_DT))
+		robot_trajs.append(robot_state)
+
+		if transition_occurs_at is None:
+			for t in range(1,len(robot_state)):
+				if robot_state[t,2] != og_robot_traj[t,2]:
+					transition_occurs_at = t
+					break
+
+		path2mlog = os.path.join(anlys_log_path,logs[i],'metrics_log.npz')
+		mlog = np.load(path2mlog)
+
+	robot_trajs = np.array(robot_trajs)
+
+	# plot the Z(x) and the robot trajs
+	in_z_space = []
+	for i,point in enumerate(ss_points):
+		if robot_trajs[i,-1,2] <= 0.4:
+			in_z_space.append(0)
+			axs[0].scatter(point[0],point[1],s=20,marker='o',color='gray')
+			axs[1].plot(robot_trajs[i][:,2], color='gray')
+		else:
+			in_z_space.append(1)
+			axs[0].scatter(point[0],point[1],s=20,marker='o',color='red')
+			axs[1].plot(robot_trajs[i][:,2], color='red')
+
+	# plot the oracle guided traj
+	axs[0].scatter(og_lmp[0],og_lmp[1],s=20,marker='x',color='blue')
+	axs[1].plot(og_robot_traj[:,2],color='blue',label='oracle guided')
+
+	# plot the transition occurs at
+	axs[1].axvline(x=transition_occurs_at, color='black', linestyle='--')
+
+	axs[0].set_title('Z(x) at transition')
+	axs[1].set_title('base_height traj.')
+
+	axs[0].set_xlabel('latent 0')
+	axs[0].set_ylabel('latent 1')
+	axs[1].set_xlabel('timesteps')
+	axs[1].set_ylabel('base_height')
+
+	axs[1].legend()
+	axs[1].grid()
+
+	fig.suptitle('transition_lmsr_test')
+	fig.tight_layout()
+	fig.savefig(os.path.join(alp_till_logs,'transition_lmsr_test.png'))
+	print('close figure to exit')
+	plt.show()
