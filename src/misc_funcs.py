@@ -25,17 +25,17 @@ ENV_DT 	= 0.03
 DATA_DT = 0.0005
 
 QPOS2USE = [
-                0,1,2,          # base_pos
-                # 3,4,5,6,        # base_quat
-                # 7,8,9,10,11,    # jpos_left
-                # 12,13,14,15,16, # jpos_right
-            ]
+				0,1,2,          # base_pos
+				# 3,4,5,6,        # base_quat
+				# 7,8,9,10,11,    # jpos_left
+				# 12,13,14,15,16, # jpos_right
+			]
 QVEL2USE =  [
-                0,1,2,          # base_tvel
-                # 3,4,5,          # base_avel
-                # 6,7,8,9,10,     # jvel_left
-                # 11,12,13,14,15, # jvel_right
-            ]
+				0,1,2,          # base_tvel
+				# 3,4,5,          # base_avel
+				# 6,7,8,9,10,     # jvel_left
+				# 11,12,13,14,15, # jvel_right
+			]
 
 PREV_RTM_X0_NOMINAL =   [
 						  0.0, 0.0, 0.0,
@@ -62,17 +62,30 @@ custom_tight_layout = lambda  :     plt.subplots_adjust(
 						wspace=0.155,
 						)
 def downsample(data, ds_rate=10):
-    return data[::ds_rate,:]
+	return data[::ds_rate,:]
 
 def generate_random_colors(n):
-    # Generate 'n' random colors
-    random_colors = []
-    for _ in range(n):
-        red = random.uniform(0.1, 1.0)
-        green = random.uniform(0.1, 1.0)
-        blue = random.uniform(0.1, 1.0)
-        random_colors.append((red, green, blue))
-    return random_colors
+	# Generate 'n' random colors
+	avoid_colours_close_to = [
+								[1.0, 0.0, 0.0], # red
+								[0.5, 0.5, 0.5], # gray
+							]
+	closness_threshold = 0.2
+	
+	random_colors = []
+	for _ in range(n):
+		is_close = True
+		while is_close:
+			red = random.uniform(0.1, 1.0)
+			green = random.uniform(0.1, 1.0)
+			blue = random.uniform(0.1, 1.0)
+			is_close = False
+			for avoid_colour in avoid_colours_close_to:
+				if np.linalg.norm(np.array([red,green,blue])-np.array(avoid_colour)) < closness_threshold:
+					is_close = True
+					break
+		random_colors.append((red, green, blue))
+	return random_colors
 
 def load_key_from_all_logs(path2logs,key):
 	loglist = os.listdir(path2logs)

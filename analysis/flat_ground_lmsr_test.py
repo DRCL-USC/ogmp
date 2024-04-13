@@ -314,7 +314,7 @@ if __name__ == '__main__':
 	processes = []
 	trial_index = 0
 	tqdm.set_lock(multiprocessing.RLock())
-	
+	'''
 	for worker in range(nop):
 		if reminder -worker > 0:
 				n_trials_for_this_process = quotient + 1 
@@ -343,7 +343,7 @@ if __name__ == '__main__':
 	
 	for t in processes:
 		t.join()
-
+	'''
 	
 	# collect all results
 	logs =[obj for obj in  os.listdir(anlys_log_path) if os.path.isdir(os.path.join(anlys_log_path,obj))]
@@ -447,7 +447,7 @@ if __name__ == '__main__':
 	
 	axs[3].set_xlabel('timesteps')
 	axs[3].set_ylabel('base_height')
-	titles = ['Z(x)' , 'elbow and eilhouette scores', 'clustered Z(x)', 'clustered base_height traj.']
+	titles = ['Z(x)' , 'elbow and silhouette scores', 'clustered Z(x)', 'clustered base_height traj.']
 	latent_plots = [0,2]
 	
 	for ax,title in zip(axs,titles):
