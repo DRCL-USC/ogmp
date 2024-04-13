@@ -75,7 +75,7 @@ The corresponding config file for each analyisis is in `./exp_confs/` folder. Al
 ## Recreating results from the paper
 
 <img src="media/results_recreated.jpg" align="right" width="300"/>
-Since the paper, the codebase has been cleaned and made modular for easy usage. This results in minor change in the training convergence (as in the figure), but qualitatively the policy's performance remain indistinguishable. 
+Since the paper, the codebase has been cleaned and made modular for easy usage. This results in minor changes in the training convergence (as in the figure) and analyses results, but qualitatively the policy's performance is indistinguishable and assertions of the analyses hold.
 
 <br clear="left"/>
 
