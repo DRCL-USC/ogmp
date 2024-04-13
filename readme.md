@@ -1,4 +1,4 @@
-# OGMP
+# OGMP: Oracle Guided Multimodal Policies for Agile and Versatile Robot Control
 
 Codebase accompanying the paper [OGMP: Oracle Guided Multimodal Policies for Agile and Versatile Robot Control](https://arxiv.org/abs/2403.04205)
 
@@ -23,7 +23,7 @@ To install the dependencies, run:
     
     pip3 install -r requirements.txt
 
-Install old version of torch (new may work but not tested)
+Install old version of torch (new may work but is not tested)
     
     pip3 install torch==1.13.0+cpu --extra-index-url https://download.pytorch.org/whl/cpu
 
@@ -42,17 +42,33 @@ Similarly to train the best policy from the paper, run
 ## High-level overview
 
 * algos: contains the custom ppo implementation from [link](https://github.com/osudrl/RSS-2020-learning-memory-based-control)
-* analysis: contains the code for analysis in the paper
-* nn: contains the custom torch neural network (FF and LSTM), policy, critic implementation.
-* logs: contains the training logs.
+* analysis: contains the code for analysis presenteed in the paper
+* nn: contains the custom torch neural network (FF and LSTM), policy, critic implementation from [link](https://github.com/osudrl/RSS-2020-learning-memory-based-control)
+* logs: contains the training logs, policies and encoders.
 * dtsd: contains the environments
 * exp_confs: contains the experiment configuration files for training and testing.
-* train.py: file to train the policies.
-* test.py: file to test the policies.
+* train.py: file to train policies.
+* test.py: file to test policies.
 
-## To Do 
+## Results recreation
 
-- [ ] add the training configuration to recreate the results in the paper
-- [ ] train with new environments with the best config
-- [ ] test with the best config
-- [ ] analysis codes
+<img src="media/results_recreated.jpg" align="right" width="250"/>
+Since the paper, the codebase has been cleaned and made modular for easy usage. This results in minor change in the training convergence (as show in the figure right ), but qualitatively the results remain indistinguishable. 
+
+<br clear="left"/>
+
+
+## Citation
+
+If you find this code useful, consider citing:
+
+```
+    @misc{krishna2024ogmp,
+      title={OGMP: Oracle Guided Multimodal Policies for Agile and Versatile Robot Control}, 
+      author={Lokesh Krishna and Nikhil Sobanbabu and Quan Nguyen},
+      year={2024},
+      eprint={2403.04205},
+      archivePrefix={arXiv},
+      primaryClass={cs.RO}
+    }
+```

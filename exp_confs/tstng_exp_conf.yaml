@@ -2,7 +2,7 @@ sim_params:
   base: mujoco
   model_path: dtsd/envs/rsc/models/mini_biped/xmls/biped_mvsc.xml
   render: true
-visualize_reference: false
+visualize_reference: true
 p_gain: 30
 d_gain: 0.5
 simrate: 60
@@ -11,7 +11,6 @@ observations:
   robot_state: null
   clock_osu: null
   mode_latent: null
-  terrain_xlen_infront: 0.5
 terminations:
   epi_steps_max_thresh: 400
   total_reward_min_thresh: 0.5
@@ -91,12 +90,12 @@ mode_encoder:
   input_type: base_only
   offset_x0:
   - x
-logdir: /home1/lkrajan/drcl_projects/cpptf_v2/logs/bg_b_pr3_2_obs4/4/
+logdir: /home1/lkrajan/drcl_projects/cpptf_v2/logs/bg_b_pr3_2_obs4/0/
 n_episodes: 10
-exp_log_path: ./logs/fgb_vary_obs/4
+exp_log_path: ./logs/fgb_vary_obs/0
 oracle:
   prediction_horizon: 30
-  entry: oracles.prev_orac.oracle_var
+  entry: oracles.li_orac.oracle_var
   state_feedback:
   - x
   - y
@@ -105,4 +104,4 @@ oracle:
   - z_dot
   - y_dot
   scan_xlen_infront: 1.0
-visualize_oracle: false
+visualize_oracle: true

@@ -34,36 +34,13 @@ class ogpo_biped_base:
     prop_file = open(model_prop_path) 
     self.model_prop = yaml.load(prop_file, Loader=yaml.FullLoader)    
 
-    # set task param changes to span discrete_grid and treat it like discrete
-    for trk_elem in self.exp_conf['task']['modes'].keys():
-      if self.exp_conf['task']['modes'][trk_elem]['param_dist']['type'] == 'discrete_grid':
-        
-        params_values = []
-
-        for p_i,p_name in enumerate(self.exp_conf['task']['modes'][trk_elem]['param_names']):
-          params_values.append(
-                                np.linspace(
-                                            self.exp_conf['task']['modes'][trk_elem]['param_dist']['support'][0][p_i],
-                                            self.exp_conf['task']['modes'][trk_elem]['param_dist']['support'][-1][p_i],
-                                            self.exp_conf['task']['modes'][trk_elem]['param_dist']['density'][p_i]
-                                          ).tolist()
-                              )     
-        
-        param_values = list(product(*params_values))
-        for pvi,pv in enumerate(param_values):
-          param_values[pvi] = list(pv)
-        self.exp_conf['task']['modes'][trk_elem]['param_dist']['points'] = param_values
-
     # any default values
     if 'epi_steps_max_thresh' not in self.exp_conf['terminations'].keys():
       self.exp_conf['terminations']['epi_steps_max_thresh'] = np.inf
       print('epi_steps_max_thresh not found in exp_conf, setting to np.inf')
 
     # set simulator base
-    self.sim = mujoco_sim( 
-                    **self.exp_conf['sim_params']
-                    )
-
+    self.sim = mujoco_sim( **self.exp_conf['sim_params'])
 
     # set render,vis variants of functions
     if exists_and_true('visualize_oracle',self.exp_conf):
@@ -77,6 +54,7 @@ class ogpo_biped_base:
     self.episode_counter = 0
     self.this_epi_nstep  = 0 
     self.phase_add = 1
+
     # simulate X mujoco steps with same pd target, action_repeat
     self.simrate = self.exp_conf['simrate'] 
     self.dt =  self.simrate * self.sim.dt
@@ -439,10 +417,7 @@ class ogpo_biped_base:
             if contact:
                 break
         
-        
-
-      
-      
+  
     if 'set_robot_base_tvel_x' in self.exp_conf['initialisations'].keys():
       self.sim.data.qvel[self.model_prop[self.exp_conf['robot']]['ids']['base_tvel'][0]] = np.random.uniform(
                           low=self.exp_conf['initialisations']['set_robot_base_tvel_x'][0], 

@@ -1,5 +1,5 @@
 n_episodes: 10
-exp_log_path: ./logs/fgb_vary_obs/4
+exp_log_path: ./logs/fgb_vary_obs/0
 # configs below will overwrite the default/training/depreciated configs
 sim_params:
   base: mujoco
@@ -13,7 +13,7 @@ terminations:
   base_pos_x_ref_error_thresh: 0.3
 oracle:
   prediction_horizon: 30
-  entry: oracles.prev_orac.oracle_var
+  entry: oracles.li_orac.oracle_var
   state_feedback:
   - x
   - y
