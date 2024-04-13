@@ -45,6 +45,22 @@ custom_tight_layout = lambda  :     plt.subplots_adjust(
 						wspace=0.155,
 						)
 
+def load_key_from_all_logs(path2logs,key):
+	loglist = os.listdir(path2logs)
+
+	key_vals = None
+	for i,log_name in enumerate(loglist):
+		
+		if 'worker_' in log_name and os.path.isdir(os.path.join(path2logs,log_name)):
+
+			worker_log = np.load(os.path.join(path2logs,log_name+'/logs.npz'),allow_pickle=True)
+
+			if key_vals is None:
+				key_vals = worker_log[key]
+			else:
+				key_vals = np.concatenate((key_vals,worker_log[key]))
+	return key_vals
+
 def load_lme_from_all_logs(path2logs):
 	loglist = os.listdir(path2logs)
 
@@ -167,7 +183,6 @@ def load_trajs(
 	
 	return train_set, traj_names
 
-
 def get_mode_params(key,x0,param,terrain_res):
 	if key == 'flat':
 		terrain_map = np.array(np.zeros((1,terrain_res)))
@@ -225,7 +240,6 @@ def get_mode_params(key,x0,param,terrain_res):
 		exit()
 	
 	return state_goal, terrain_map, x0
-
 
 def load_trajs_frm_preview(
 							conf,
@@ -703,29 +717,3 @@ def get_encodings(model, samples):
 	return {'sample':zs,'mean':z_means,'std':z_stds}
 
 
-if __name__ == '__main__':
-
-	unit_test = 'plot_2d_mode_space'
-
-	if unit_test == 'plot_2d_mode_space':
-		zs_cluster = [
-						np.random.uniform(-0.5,0,(4,2)),
-						np.random.uniform(0.5,1,(6,2)),
-						np.random.uniform(0,0.5,(3,2)),
-						np.random.uniform(-1.0,-0.5,(5,2)),
-					]
-		groups_variant_names = {}
-
-		for i in range(len(zs_cluster)):
-			groups_variant_names['group_'+str(i)] = ['v_'+str(j) for j in range(len(zs_cluster[i]))]
-
-		print(zs_cluster)
-		print(groups_variant_names)
-
-		plot_2d_mode_space(
-							zs_cluster,
-							groups_variant_names,
-							savepath=None,
-							annotate_variant_name=True,
-							vary_variants_alpha=True
-						)

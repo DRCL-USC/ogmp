@@ -11,7 +11,8 @@ TODO:
 import sys
 sys.path.append('./')
 import torch
-from util import env_factory
+from src.util import env_factory
+from src.misc_funcs import load_key_from_all_logs
 import os
 import numpy as np
 import yaml
@@ -41,6 +42,16 @@ class camera_trolly:
 			self.pos += self.delta_pos
 		pass
 
+
+expid2label = {
+					0: '[xt, zt, ct]',
+					1: '[xt, zt]',
+					2: '[xt, ht, ct]',
+					3: '[xt, ht]',
+					4: '[xt, ht, zt, ct]',
+					5: '[xt, ht, zt]',
+				}
+
 def n_rollouts_test_worker(
 					anlys_log_path,
 					policy_path,
@@ -61,25 +72,14 @@ def n_rollouts_test_worker(
 
 		iteration_times = []
 
-		# fgb
-		base_poss_i = []
-		base_poss_f = []
-		base_rpys_i = []
-		base_rpys_f = []
 
 		# common
 		episode_length = []
 		undisc_returns = []
 
 		# for agility
-		base_tvel_means = []
 		base_tvel_maxs = []
-		base_avel_means = []
-		base_avel_maxs = []
-		base_tacc_means = []
-		base_tacc_maxs = [] 
-		base_aacc_means = []
-		base_aacc_maxs = []
+		base_tacc_x_maxs = [] 
 
 		mode_latents_encountered = []
 		text = "# Worker {0}".format(worker_id) 
@@ -130,12 +130,7 @@ def n_rollouts_test_worker(
 					returns = 0
 
 					base_tvels = []
-					base_avels = []
 					base_taccs = []
-					base_aaccs = []
-
-					base_pos_i = env.get_robot_base_pos().copy()
-					base_rpy_i = env.get_robot_base_ori(format='rpy').copy()
 
 					while not done:
 						if not env.sim.viewer_paused and viewer_alive:
@@ -163,16 +158,11 @@ def n_rollouts_test_worker(
 								mode_latents_encountered.append(env.curr_mode_latent)
 
 							# get data
-							base_tvel = env.get_robot_base_tvel()
-							base_avel = env.get_robot_base_avel()
-							base_tacc = env.get_robot_base_tacc()
-							base_aacc = env.get_robot_base_aacc()
+							base_tvel = env.get_robot_base_tvel().copy()
+							base_tacc = env.get_robot_base_tacc().copy()
 							# append data
 							base_tvels.append(base_tvel)
-							base_avels.append(base_avel)
 							base_taccs.append(base_tacc)
-							base_aaccs.append(base_aacc)
-
 
 							state = torch.Tensor(next_state)
 							steps += 1
@@ -183,25 +173,17 @@ def n_rollouts_test_worker(
 							if not viewer_alive:
 								break
 
-
-					base_pos_f = env.get_robot_base_pos().copy()
-					base_rpy_f = env.get_robot_base_ori(format='rpy').copy()
-
+					base_tvels = np.array(base_tvels)
+					base_taccs = np.array(base_taccs)
 					# log performance metrics
-					base_poss_i.append(base_pos_i)
-					base_poss_f.append(base_pos_f)
-					base_rpys_i.append(base_rpy_i)
-					base_rpys_f.append(base_rpy_f)
+
 					episode_length.append(steps)
 					undisc_returns.append(returns)
-					base_tvel_means.append(np.mean(base_tvels))
-					base_tvel_maxs.append(np.max(base_tvels))
-					base_avel_means.append(np.mean(base_avels))
-					base_avel_maxs.append(np.max(base_avels))
-					base_tacc_means.append(np.mean(base_taccs))
-					base_tacc_maxs.append(np.max(base_taccs))
-					base_aacc_means.append(np.mean(base_aaccs))
-					base_aacc_maxs.append(np.max(base_aaccs))
+
+					base_tvel_maxs.append(np.max(base_tvels[:,0]))
+					base_tacc_x_maxs.append(np.max(np.linalg.norm(base_taccs,axis=1)))	
+
+				
 					iteration_times.append(time_elapsed - prev_time)
 					prev_time = time_elapsed
 					
@@ -224,22 +206,8 @@ def n_rollouts_test_worker(
 								undisc_returns = np.copy(undisc_returns),
 								iteration_times = np.copy(iteration_times),
 								mode_latents_encountered = np.copy(mode_latents_encountered),
-
-								base_poss_i = np.copy(base_poss_i),
-								base_poss_f = np.copy(base_poss_f),
-								base_rpys_i = np.copy(base_rpys_i),
-								base_rpys_f = np.copy(base_rpys_f),
-
 								base_tvel_maxs = np.copy(base_tvel_maxs),
-								base_avel_maxs = np.copy(base_avel_maxs),
-								base_tacc_maxs = np.copy(base_tacc_maxs),
-								base_aacc_maxs = np.copy(base_aacc_maxs),
-
-								base_tvel_means = np.copy(base_tvel_means),
-								base_avel_means = np.copy(base_avel_means),
-								base_tacc_means = np.copy(base_tacc_means),
-								base_aacc_means = np.copy(base_aacc_means),
-
+								base_tacc_x_maxs = np.copy(base_tacc_x_maxs),
 
 							)
 		env.close()
@@ -247,17 +215,22 @@ def n_rollouts_test_worker(
 
 if __name__ == '__main__':
 	
+
 	parser = argparse.ArgumentParser()
 	parser.add_argument("--confpath", default='exp_confs/n_rollout_test.yaml', type=str)
 	args = parser.parse_args()
 	tstng_conf = yaml.load(open(args.confpath), Loader=yaml.FullLoader)
 
-
+	
 	for path2policy in tstng_conf['paths2policies']:
 		
 		modelpath = os.path.join(path2policy,'actor.pt')	
 		if os.path.isfile(modelpath):
-			print('testing policy:',path2policy)
+			print('****************************************************************************************************')
+
+			expid = int(path2policy.split('/')[-2].split('_')[-1])
+
+			print('testing policy:',path2policy,':',expid2label[expid])
 			n_trials_to_run = tstng_conf['n_rollouts']
 			anlys_log_path = modelpath.replace('logs','results').replace('actor.pt',
 			'n_rollouts_test/'+str(n_trials_to_run)+'_rollouts_'+tstng_conf['test_name_suffix']+'/')		
@@ -348,5 +321,22 @@ if __name__ == '__main__':
 			for t in processes:
 				t.join()
 
+			base_tacc_x_maxs = load_key_from_all_logs(anlys_log_path,'base_tacc_x_maxs')
+			base_tvel_maxs = load_key_from_all_logs(anlys_log_path,'base_tvel_maxs')
+			episode_length = load_key_from_all_logs(anlys_log_path,'episode_length')
+			max_fraudes = np.power(base_tvel_maxs,2) / (9.81*0.459) # 0.459 is the leg length, 9.81 is the gravity
+			latetent_modes_encountered = load_key_from_all_logs(anlys_log_path,'mode_latents_encountered')
+			
+			
+			if latetent_modes_encountered[0] is not None:
+				lme_center = np.mean(latetent_modes_encountered,axis=0)
+				lme_radius_max = np.max(np.linalg.norm(latetent_modes_encountered-lme_center,axis=1))
+				print('\nM.T.A: {0:.2f}g, M.H.S: {1:.2f}, M.F: {2:.2f}, E.L: {3:.2f}, a_ID: [{4:.2f}, {5:.2f}], d_ID: {6:.2f}'.format(np.mean(base_tacc_x_maxs)/9.81,np.mean(base_tvel_maxs),np.mean(max_fraudes),np.mean(episode_length),lme_center[0],lme_center[1],lme_radius_max))
+			else:
+				print('\nM.T.A: {0:.2f}g, M.H.S: {1:.2f}, M.F: {2:.2f}, E.L: {3:.2f}, a_ID: NA, d_ID NA '.format(np.mean(base_tacc_x_maxs)/9.81,np.mean(base_tvel_maxs),np.mean(max_fraudes),np.mean(episode_length),np.mean(base_tacc_x_maxs),np.mean(base_tvel_maxs)))
+
 		else:
 			print('policy absent:',modelpath)
+	
+
+

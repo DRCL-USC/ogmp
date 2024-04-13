@@ -1,7 +1,12 @@
 # config for the test
 paths2policies: [
-                  ./logs/fgb_vary_obs/4/,
+
                   ./logs/fgb_vary_obs/0/,
+                  ./logs/fgb_vary_obs/1/,
+                  ./logs/fgb_vary_obs/2/,
+                  ./logs/fgb_vary_obs/3/,
+                  ./logs/fgb_vary_obs/4/,
+                  ./logs/fgb_vary_obs/5/,
 
                 ]
 n_rollouts: 100
@@ -19,7 +24,7 @@ terminations:
   base_height_min_thresh: 0.3 # fall detection
 oracle:
   prediction_horizon: 30
-  entry: preview_cmmp.prev_orac.oracle_var
+  entry: oracles.prev_orac.oracle_var
   state_feedback:
   - x
   - y
